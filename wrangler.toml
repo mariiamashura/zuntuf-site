@@ -1,0 +1,16 @@
+# Cloudflare deployment config.
+#
+# Astro builds the static site into ./dist (via `npm run build`).
+# The [assets] block tells Cloudflare to serve that folder as-is and to
+# use the generated 404.html for unknown addresses.
+#
+# In the Cloudflare "Set up your application" screen:
+#   Build command:  npm run build
+#   Deploy command: npx wrangler deploy
+
+name = "zuntuf-site"
+compatibility_date = "2026-11-01"
+
+[assets]
+directory = "./dist"
+not_found_handling = "404-page"
