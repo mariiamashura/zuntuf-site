@@ -6,6 +6,7 @@ export const site = {
   social: {
     github: 'https://github.com/mariiamashura' as string,
     linkedin: 'https://www.linkedin.com/in/maria-mashura-56606558' as string,
+    youtube: 'https://www.youtube.com/@MariiaMashura' as string,
     itch: '' as string, // itch.io profile or page
   },
   // Donation link (Monobank jar: https://send.monobank.ua/jar/XXXXXXXX). Empty = the tile is hidden.

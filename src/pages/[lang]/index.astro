@@ -17,7 +17,7 @@ const items = [
   ...(hasProjects ? [{ id: 'projects', href: localePath(lang, 'projects'), label: t(lang, 'nav.projects'), description: t(lang, 'projects.intro'), accent: 'coral' as const }] : []),
 ];
 ---
-<Base lang={lang} title={t(lang, 'meta.home.title')} description={t(lang, 'meta.home.description')} path="" wide jsonLd={[{ '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: Astro.site!.origin + '/', inLanguage: ['en', 'de', 'uk'] }, { '@context': 'https://schema.org', '@type': 'Person', name: 'Mariia Mashura', url: Astro.site!.origin + '/', email: site.email, jobTitle: 'Graphic designer, artist', address: { '@type': 'PostalAddress', addressLocality: 'Kyiv', addressCountry: 'UA' }, sameAs: [site.social.github, site.social.linkedin].filter(Boolean) }]}>
+<Base lang={lang} title={t(lang, 'meta.home.title')} description={t(lang, 'meta.home.description')} path="" wide jsonLd={[{ '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: Astro.site!.origin + '/', inLanguage: ['en', 'de', 'uk'] }, { '@context': 'https://schema.org', '@type': 'Person', name: 'Mariia Mashura', url: Astro.site!.origin + '/', email: site.email, jobTitle: 'Graphic designer, artist', address: { '@type': 'PostalAddress', addressLocality: 'Kyiv', addressCountry: 'UA' }, sameAs: [site.social.github, site.social.linkedin, site.social.youtube].filter(Boolean) }]}>
   <Fragment slot="bg">
     <div class="intro-flood" aria-hidden="true"></div>
     <p class="intro-skip" aria-hidden="true">{t(lang, 'nav.skipIntro')}</p>

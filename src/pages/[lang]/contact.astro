@@ -15,6 +15,7 @@ const strip = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '');
 const others = [
   site.social.github ? { key: 'github', label: t(lang, 'contact.github'), href: site.social.github, text: strip(site.social.github), cls: 'ochre' } : null,
   site.social.linkedin ? { key: 'linkedin', label: t(lang, 'contact.linkedin'), href: site.social.linkedin, text: strip(site.social.linkedin), cls: 'cream' } : null,
+  site.social.youtube ? { key: 'youtube', label: t(lang, 'contact.youtube'), href: site.social.youtube, text: strip(site.social.youtube), cls: 'ochre' } : null,
   site.social.itch ? { key: 'itch', label: t(lang, 'contact.itch'), href: site.social.itch, text: strip(site.social.itch), cls: 'ochre' } : null,
   site.support ? { key: 'support', label: t(lang, 'contact.support'), href: site.support, text: t(lang, 'contact.supportText'), cls: 'cream' } : null,
 ].filter((x): x is NonNullable<typeof x> => x !== null);

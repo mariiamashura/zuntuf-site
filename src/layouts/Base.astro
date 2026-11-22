@@ -147,6 +147,7 @@ const social = site.social;
         <li class="foot__tile foot__tile--c ink ink-2"><a href={`mailto:${site.email}`}>{site.email}</a></li>
         {social.github && <li class="foot__tile foot__tile--o ink ink-3"><a href={social.github} rel="me noopener">GitHub</a></li>}
         {social.linkedin && <li class="foot__tile foot__tile--m ink"><a href={social.linkedin} rel="me noopener">LinkedIn</a></li>}
+        {social.youtube && <li class="foot__tile foot__tile--o ink ink-3"><a href={social.youtube} rel="me noopener">YouTube</a></li>}
         {social.itch && <li class="foot__tile foot__tile--c ink ink-2"><a href={social.itch} rel="me noopener">itch.io</a></li>}
         <li class="foot__tile foot__tile--w ink ink-3">{t(lang, 'footer.rights', { year: site.year })}</li>
       </ul>
