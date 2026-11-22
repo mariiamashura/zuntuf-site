@@ -181,6 +181,8 @@ const social = site.social;
   .foot__tile--o { background: var(--ochre); color: var(--cream); }
   .foot__tile--w { background: var(--cream); }
   .foot__note { font-size: .85rem; margin: 0; }
+  /* desktop: all tiles, incl. the copyright, sit on one line */
+  @media (min-width: 1000px) { .foot__tiles { flex-wrap: nowrap; gap: .4rem; } .foot__tile { font-size: .88rem; padding: .5em .75em; white-space: nowrap; } }
   /* short screens: a compact footer so the whole composition still fits */
   @media (max-height: 720px) and (min-width: 900px) { .foot { padding-block: .8rem 1.6rem; } .foot__tiles { margin-bottom: 0; } .foot__note { display: none; } .top { padding-block: .6rem; } }
 
