@@ -1,8 +1,9 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// Set SITE once the final address is known (custom domain later = change only this).
-const SITE = process.env.SITE_URL || 'https://zuntuf.workers.dev';
+// Set SITE once the final address is known (custom domain later = change only this,
+// or set the SITE_URL build variable in Cloudflare, which overrides this fallback).
+const SITE = process.env.SITE_URL || 'https://zuntuf-site.kolobokgames.workers.dev';
 
 export default defineConfig({
   site: SITE,
