@@ -1,0 +1,29 @@
+---
+// Logo: the same face as the About page, built from the same pieces (src/lib/face.ts), cropped to the head.
+import { C, pieces, eyes, nose, waves, arcs, pts } from '../lib/face';
+interface Props { size?: number; class?: string }
+const { size = 40, class: cls = '' } = Astro.props;
+const skip = new Set(['tick-l', 'tick-r']); // too small to read at logo size
+---
+<svg class={`logomark ${cls}`} viewBox="150 8 480 700" width={size * 0.69} height={size} aria-hidden="true" focusable="false">
+  <defs>
+    {eyes.map((e) => <clipPath id={`lm-${e.id}`}><polygon points={pts(e.inner)} /></clipPath>)}
+    <clipPath id="lm-arcs"><rect x="150" y="640" width="480" height="68" /></clipPath>
+  </defs>
+  {pieces.filter((p) => !skip.has(p.id)).map((p) => <polygon points={pts(p.pts)} fill={p.fill} />)}
+  {eyes.map((e) => (
+    <g>
+      <polygon points={pts(e.outer)} fill={C.brown} />
+      <polygon points={pts(e.inner)} fill={C.cream} />
+      <g clip-path={`url(#lm-${e.id})`}>
+        {[46, 32, 18].map((r) => <circle cx={e.sx} cy={e.sy} r={r} fill="none" stroke={C.coral} stroke-width="8" />)}
+      </g>
+    </g>
+  ))}
+  <polygon points={pts(nose.outer)} fill={C.brown} />
+  <polygon points={pts(nose.inner)} fill={C.ochre} />
+  {waves.map((d) => <path d={d} fill="none" stroke={C.coral} stroke-width="11" stroke-linecap="round" />)}
+  <g clip-path="url(#lm-arcs)">
+    {arcs.rings.slice(0, 2).map((r) => <circle cx={arcs.cx} cy={arcs.cy} r={r.r} fill="none" stroke={r.c} stroke-width={r.w} />)}
+  </g>
+</svg>

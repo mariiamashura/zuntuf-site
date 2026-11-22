@@ -1,0 +1,208 @@
+{
+  "name": "BowerFS",
+  "order": 1,
+  "accent": "mustard",
+  "category": "files",
+  "status": "released",
+  "version": "0.1.0",
+  "art": "bowerfs",
+  "languages": [
+    "en",
+    "de",
+    "ua"
+  ],
+  "platforms": [
+    {
+      "os": "windows",
+      "downloadUrl": "https://github.com/mariiamashura/BowerFS-releases/releases/latest/download/BowerFS-0.1.0-win64.zip",
+      "size": "103 MB"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/tools/bowerfs/shots/01.webp",
+      "alt": {
+        "en": "BowerFS: two panels with thumbnails and a preview",
+        "de": "BowerFS: zwei Fenster mit Vorschaubildern und Vorschau",
+        "ua": "BowerFS: дві панелі з мініатюрами та переглядом"
+      }
+    },
+    {
+      "src": "/tools/bowerfs/shots/02.webp",
+      "alt": {
+        "en": "Four panels, each with its own tabs",
+        "de": "Vier Fenster, jedes mit eigenen Tabs",
+        "ua": "Чотири панелі, кожна зі своїми вкладками"
+      }
+    },
+    {
+      "src": "/tools/bowerfs/shots/03.webp",
+      "alt": {
+        "en": "Finding duplicate files",
+        "de": "Doppelte Dateien finden",
+        "ua": "Пошук дублікатів"
+      }
+    },
+    {
+      "src": "/tools/bowerfs/shots/04.webp",
+      "alt": {
+        "en": "Comparing two pictures",
+        "de": "Zwei Bilder vergleichen",
+        "ua": "Порівняння двох зображень"
+      }
+    },
+    {
+      "src": "/tools/bowerfs/shots/05.webp",
+      "alt": {
+        "en": "Renaming many files at once",
+        "de": "Viele Dateien auf einmal umbenennen",
+        "ua": "Перейменування багатьох файлів одразу"
+      }
+    },
+    {
+      "src": "/tools/bowerfs/shots/06.webp",
+      "alt": {
+        "en": "Preview of a 3D model",
+        "de": "Vorschau eines 3D-Modells",
+        "ua": "Перегляд 3D-моделі"
+      }
+    },
+    {
+      "src": "/tools/bowerfs/shots/07.webp",
+      "alt": {
+        "en": "Dark theme",
+        "de": "Dunkles Design",
+        "ua": "Темна тема"
+      }
+    }
+  ],
+  "i18n": {
+    "en": {
+      "tagline": "A file manager for your photos and videos, with a clear view of everything.",
+      "description": "BowerFS helps you keep order in big collections of pictures and videos. See your files as pictures, find copies you saved twice, rename hundreds of files in one go. Nothing is changed until you confirm it, and every action can be undone.",
+      "features": [
+        "Up to four folders open side by side, each with its own tabs",
+        "Look inside almost any file without opening it: photos, videos, music, PDF, Word and Excel documents, archives and even 3D models",
+        "Finds duplicate files by what is inside them, not by their names, and puts the extra copies in the Recycle Bin",
+        "Compares two pictures: side by side, laid over each other, or as a map of the differences",
+        "Renames many files at once, for example 2026-05-14_Iceland_001. You see every new name before anything happens",
+        "Every copy, move and rename is recorded, and Ctrl+Z takes it back",
+        "Drag and drop between panels and to or from Windows Explorer",
+        "Light and dark theme, English, German and Ukrainian"
+      ],
+      "requirements": [
+        "Windows 10 or 11, 64-bit",
+        "No installation: unpack the archive and run BowerFS.exe, it even works from a USB stick",
+        "Video previews need the free FFmpeg tool; it is not included, and everything else works without it"
+      ],
+      "privacy": "BowerFS works fully offline: no internet connection, no account, no data sent anywhere. Your files are changed only by actions you confirm yourself.",
+      "faq": [
+        {
+          "q": "Windows says the program is unknown. Is it safe?",
+          "a": "Windows shows this warning for every new program that has no paid digital signature. Choose “More info”, then “Run anyway”. The checksum of the download is published so you can verify the file."
+        },
+        {
+          "q": "A file cannot be renamed or deleted, it says “Access denied”.",
+          "a": "Usually your antivirus or Windows “Controlled folder access” is blocking an unknown program. Add BowerFS.exe to the list of allowed programs."
+        },
+        {
+          "q": "Where does the program keep its data?",
+          "a": "On the first start it asks you to choose a folder, by default Documents\\BowerFS. There it stores its index, tags and thumbnails. You can move it later in the settings."
+        },
+        {
+          "q": "What happens when I delete a file?",
+          "a": "It goes to the Recycle Bin. On drives that have none, such as USB sticks or network folders, the program asks twice before deleting for good."
+        },
+        {
+          "q": "Can I use it for work?",
+          "a": "Yes, it is free to use, including for commercial work. It is not open source, and copying or selling the program needs the author’s permission."
+        }
+      ]
+    },
+    "de": {
+      "tagline": "Ein Dateimanager für Ihre Fotos und Videos, der alles übersichtlich zeigt.",
+      "description": "BowerFS hilft, Ordnung in große Sammlungen von Bildern und Videos zu bringen. Sehen Sie Ihre Dateien als Bilder, finden Sie doppelt gespeicherte Kopien, benennen Sie Hunderte Dateien auf einmal um. Nichts wird verändert, bevor Sie es bestätigen, und jede Aktion lässt sich rückgängig machen.",
+      "features": [
+        "Bis zu vier Ordner nebeneinander, jeder mit eigenen Tabs",
+        "Ein Blick in fast jede Datei, ohne sie zu öffnen: Fotos, Videos, Musik, PDF, Word- und Excel-Dokumente, Archive und sogar 3D-Modelle",
+        "Findet doppelte Dateien anhand ihres Inhalts, nicht ihres Namens, und legt überzählige Kopien in den Papierkorb",
+        "Vergleicht zwei Bilder: nebeneinander, übereinandergelegt oder als Karte der Unterschiede",
+        "Benennt viele Dateien auf einmal um, zum Beispiel 2026-05-14_Island_001. Jeder neue Name ist vorher zu sehen",
+        "Jedes Kopieren, Verschieben und Umbenennen wird protokolliert, mit Strg+Z nehmen Sie es zurück",
+        "Ziehen und Ablegen zwischen den Fenstern sowie von und zum Windows-Explorer",
+        "Helles und dunkles Design, Englisch, Deutsch und Ukrainisch"
+      ],
+      "requirements": [
+        "Windows 10 oder 11, 64-Bit",
+        "Keine Installation: Archiv entpacken und BowerFS.exe starten, es läuft sogar von einem USB-Stick",
+        "Für Video-Vorschauen wird das kostenlose Programm FFmpeg benötigt; es ist nicht enthalten, alles andere funktioniert auch ohne"
+      ],
+      "privacy": "BowerFS arbeitet vollständig offline: keine Internetverbindung, kein Konto, keine Daten, die irgendwohin gesendet werden. Ihre Dateien werden nur durch Aktionen verändert, die Sie selbst bestätigen.",
+      "faq": [
+        {
+          "q": "Windows sagt, das Programm sei unbekannt. Ist es sicher?",
+          "a": "Windows zeigt diese Warnung bei jedem neuen Programm ohne kostenpflichtige digitale Signatur. Wählen Sie „Weitere Informationen“ und dann „Trotzdem ausführen“. Die Prüfsumme des Downloads wird veröffentlicht, damit Sie die Datei überprüfen können."
+        },
+        {
+          "q": "Eine Datei lässt sich nicht umbenennen oder löschen („Zugriff verweigert“).",
+          "a": "Meist blockiert Ihr Virenschutz oder der Windows-Ordnerschutz ein unbekanntes Programm. Fügen Sie BowerFS.exe zur Liste der erlaubten Programme hinzu."
+        },
+        {
+          "q": "Wo speichert das Programm seine Daten?",
+          "a": "Beim ersten Start fragt es nach einem Ordner, standardmäßig Dokumente\\BowerFS. Dort liegen Index, Tags und Vorschaubilder. In den Einstellungen können Sie ihn später verschieben."
+        },
+        {
+          "q": "Was passiert, wenn ich eine Datei lösche?",
+          "a": "Sie landet im Papierkorb. Auf Laufwerken ohne Papierkorb, etwa USB-Sticks oder Netzwerkordnern, fragt das Programm vor dem endgültigen Löschen zweimal nach."
+        },
+        {
+          "q": "Darf ich es beruflich nutzen?",
+          "a": "Ja, die Nutzung ist kostenlos, auch für gewerbliche Arbeit. Das Programm ist nicht quelloffen; Kopieren oder Verkaufen braucht die Erlaubnis des Autors."
+        }
+      ]
+    },
+    "ua": {
+      "tagline": "Файловий менеджер для ваших фото та відео, де все видно одразу.",
+      "description": "BowerFS допомагає навести лад у великих збірках зображень і відео. Дивіться на файли як на картинки, знаходьте копії, збережені двічі, перейменовуйте сотні файлів за раз. Нічого не змінюється, доки ви не підтвердите, а кожну дію можна скасувати.",
+      "features": [
+        "До чотирьох папок поруч, кожна зі своїми вкладками",
+        "Погляд усередину майже будь-якого файлу без відкриття: фото, відео, музика, PDF, документи Word і Excel, архіви і навіть 3D-моделі",
+        "Знаходить дублікати за вмістом, а не за назвою, і відправляє зайві копії до кошика",
+        "Порівнює два зображення: поруч, одне поверх іншого або як карту відмінностей",
+        "Перейменовує багато файлів за раз, наприклад 2026-05-14_Ісландія_001. Кожну нову назву видно заздалегідь",
+        "Кожне копіювання, переміщення й перейменування записується, а Ctrl+Z повертає все назад",
+        "Перетягування між панелями та до Провідника Windows і з нього",
+        "Світла й темна тема, англійська, німецька та українська"
+      ],
+      "requirements": [
+        "Windows 10 або 11, 64-розрядна",
+        "Без встановлення: розпакуйте архів і запустіть BowerFS.exe, працює навіть з флешки",
+        "Для перегляду відео потрібна безкоштовна програма FFmpeg; її не додано, а все інше працює і без неї"
+      ],
+      "privacy": "BowerFS працює повністю офлайн: без інтернету, без акаунта, нічого нікуди не надсилається. Ваші файли змінюються лише тими діями, які ви самі підтвердили.",
+      "faq": [
+        {
+          "q": "Windows пише, що програма невідома. Це безпечно?",
+          "a": "Windows показує таке попередження для кожної нової програми без платного цифрового підпису. Оберіть «Докладніше», потім «Усе одно виконати». Контрольну суму завантаження опубліковано, щоб ви могли перевірити файл."
+        },
+        {
+          "q": "Файл не вдається перейменувати або видалити, пише «Доступ заборонено».",
+          "a": "Зазвичай антивірус або «Контрольований доступ до папок» Windows блокує невідому програму. Додайте BowerFS.exe до списку дозволених програм."
+        },
+        {
+          "q": "Де програма зберігає свої дані?",
+          "a": "Під час першого запуску вона просить обрати папку, за замовчуванням Документи\\BowerFS. Там лежать індекс, мітки та мініатюри. Пізніше її можна перенести в налаштуваннях."
+        },
+        {
+          "q": "Що буде, якщо я видалю файл?",
+          "a": "Він потрапить до кошика. На дисках без кошика, як-от флешки чи мережеві папки, програма двічі перепитає перед остаточним видаленням."
+        },
+        {
+          "q": "Чи можна користуватися для роботи?",
+          "a": "Так, користуватися безкоштовно, зокрема для комерційної роботи. Програма не з відкритим кодом: копіювання чи продаж потребують дозволу автора."
+        }
+      ]
+    }
+  },
+  "featuresPage": true
+}

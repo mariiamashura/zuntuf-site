@@ -1,0 +1,41 @@
+---
+// Click a screenshot (img[data-zoom]) to see it at its full size in an overlay; Esc, a click outside or the button closes it.
+const { label = 'Close' } = Astro.props;
+---
+<div class="lb" data-lb hidden role="dialog" aria-modal="true">
+  <button class="lb__x" type="button" data-lb-close aria-label={label}>×</button>
+  <div class="lb__scroll" data-lb-scroll><img alt="" data-lb-img /></div>
+</div>
+
+<script>
+  const box = document.querySelector<HTMLElement>('[data-lb]');
+  if (box) {
+    const scroller = box.querySelector<HTMLElement>('[data-lb-scroll]')!;
+    const big = box.querySelector<HTMLImageElement>('[data-lb-img]')!;
+    let from: HTMLElement | null = null;
+    const close = () => { box.hidden = true; document.body.style.overflow = ''; from?.focus(); };
+    const open = (img: HTMLImageElement) => {
+      from = img;
+      big.src = img.currentSrc || img.src; big.alt = img.alt;
+      box.hidden = false; document.body.style.overflow = 'hidden';
+      scroller.scrollTo(0, 0);
+      box.querySelector<HTMLElement>('[data-lb-close]')!.focus();
+    };
+    document.querySelectorAll<HTMLImageElement>('img[data-zoom]').forEach((img) => {
+      img.tabIndex = 0; img.setAttribute('role', 'button');
+      img.addEventListener('click', () => open(img));
+      img.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); } });
+    });
+    box.addEventListener('click', (e) => { if (e.target === box || e.target === scroller || (e.target as HTMLElement).hasAttribute('data-lb-close')) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !box.hidden) close(); });
+  }
+</script>
+
+<style>
+  .lb { position: fixed; inset: 0; z-index: 1000; background: color-mix(in srgb, var(--char) 88%, transparent); display: grid; }
+  .lb[hidden] { display: none; }
+  .lb__scroll { overflow: auto; display: grid; place-items: center; padding: 3.2rem 1rem 1rem; }
+  .lb__scroll img { max-width: none; width: auto; height: auto; border: var(--stroke) solid var(--cream); background: var(--cream); }
+  .lb__x { position: fixed; top: .8rem; right: .8rem; z-index: 2; width: 44px; height: 44px; font: inherit; font-size: 1.8rem; line-height: 1; background: var(--mustard); color: var(--brown); border: var(--stroke) solid var(--brown); cursor: pointer; }
+  .lb__x:hover { background: var(--coral); }
+</style>

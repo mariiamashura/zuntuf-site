@@ -1,0 +1,181 @@
+{
+  "name": "StockUploader",
+  "order": 2,
+  "accent": "coral",
+  "category": "photography",
+  "status": "released",
+  "version": "0.1.0",
+  "art": "stockuploader",
+  "panels": false,
+  "artSize": 64,
+  "languages": [
+    "en",
+    "de",
+    "ua"
+  ],
+  "platforms": [
+    {
+      "os": "windows",
+      "downloadUrl": "https://github.com/mariiamashura/StockUploader-releases/releases/latest/download/StockUploader-0.1.0-win64.zip",
+      "size": "139 MB"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/tools/stockuploader/shots/01.webp",
+      "alt": {
+        "en": "StockUploader: a photo with its description and keywords",
+        "de": "StockUploader: ein Foto mit Beschreibung und Stichwörtern",
+        "ua": "StockUploader: фото з описом і ключовими словами"
+      }
+    },
+    {
+      "src": "/tools/stockuploader/shots/02.webp",
+      "alt": {
+        "en": "Dark theme",
+        "de": "Dunkles Design",
+        "ua": "Темна тема"
+      }
+    }
+  ],
+  "i18n": {
+    "en": {
+      "tagline": "Prepare your photos for sale on Shutterstock, step by step.",
+      "description": "StockUploader checks that your photos will be accepted, helps you write a description and keywords for each one, lets you touch them up, and sends them to the stock site. You stay in control: it points out what still needs your attention.",
+      "features": [
+        "Checks every photo first and sets aside the ones the stock site would refuse: too small, too large or not a JPEG",
+        "Descriptions and keywords in three ways: one click with an AI service key, through an AI assistant you already use, or typed by hand",
+        "Marks the places where only you know the answer, such as the place, an animal species or a visible logo, with an orange frame and a hint",
+        "Simple editor: crop, straighten the horizon, adjust light and colour, remove a spot or a logo. Your original photos are never changed",
+        "Receives photos from your phone over Wi-Fi: scan a QR code, nothing to install on the phone",
+        "Uploads to the stock site and resumes if the connection drops, then prepares the file for the last step on the website",
+        "Light and dark theme, English, German and Ukrainian"
+      ],
+      "requirements": [
+        "Windows 10 or 11, 64-bit",
+        "No installation and no extra software: unpack the archive and run StockUploader.exe",
+        "Photos must be JPEG files",
+        "A Shutterstock contributor account; an AI service key is optional"
+      ],
+      "privacy": "Your photos stay on your computer, except the ones you choose to upload to the stock site. If you use the one-click description with an AI service, small copies of the pictures are sent to that service, which may charge you. Your Shutterstock password is kept in the Windows Credential Manager, not in a plain file.",
+      "faq": [
+        {
+          "q": "Do I need to pay for an AI service?",
+          "a": "No. A key is only needed for the one-click option. Instead you can press “Copy request for AI” and paste it into an AI assistant you already use, or write descriptions yourself."
+        },
+        {
+          "q": "Does it submit the photos for me?",
+          "a": "Almost. It uploads them and prepares a CSV file, but the very last step, choosing that file and pressing Submit, is done by you on the Shutterstock website, because the site offers no other way."
+        },
+        {
+          "q": "Will it change my original photos?",
+          "a": "No. Edited versions are saved next to them in a separate folder, and the originals stay as they are."
+        },
+        {
+          "q": "How do I get photos from my phone?",
+          "a": "Press “From phone” and scan the QR code with the phone’s camera. The phone and the computer must be on the same Wi-Fi. Windows may ask for network access the first time; allow it."
+        },
+        {
+          "q": "Windows says the program is unknown. Is it safe?",
+          "a": "Windows shows this warning for every new program that has no paid digital signature. Choose “More info”, then “Run anyway”."
+        },
+        {
+          "q": "What is not supported?",
+          "a": "Only JPEG photos for now: no video, vector files, RAW or HEIC. Quality of descriptions depends on the AI you choose, and the program itself invents nothing."
+        }
+      ]
+    },
+    "de": {
+      "tagline": "Bereiten Sie Ihre Fotos Schritt für Schritt für den Verkauf bei Shutterstock vor.",
+      "description": "StockUploader prüft, ob Ihre Fotos akzeptiert werden, hilft bei Beschreibung und Stichwörtern für jedes Bild, lässt Sie nachbessern und schickt alles zur Bildagentur. Sie behalten die Kontrolle: Das Programm zeigt, was noch Ihre Aufmerksamkeit braucht.",
+      "features": [
+        "Prüft zuerst jedes Foto und sortiert aus, was die Agentur ablehnen würde: zu klein, zu groß oder kein JPEG",
+        "Beschreibungen und Stichwörter auf drei Wegen: mit einem Klick über einen KI-Schlüssel, über einen KI-Assistenten, den Sie schon nutzen, oder von Hand",
+        "Markiert mit orangem Rahmen und Hinweis die Stellen, die nur Sie wissen können, etwa Ort, Tierart oder ein sichtbares Logo",
+        "Einfacher Editor: zuschneiden, Horizont begradigen, Licht und Farbe anpassen, einen Fleck oder ein Logo entfernen. Ihre Originalfotos bleiben unverändert",
+        "Empfängt Fotos vom Handy über WLAN: QR-Code scannen, auf dem Handy muss nichts installiert werden",
+        "Lädt zur Agentur hoch und setzt nach einem Verbindungsabbruch fort, dann bereitet es die Datei für den letzten Schritt auf der Website vor",
+        "Helles und dunkles Design, Englisch, Deutsch und Ukrainisch"
+      ],
+      "requirements": [
+        "Windows 10 oder 11, 64-Bit",
+        "Keine Installation und keine Zusatzsoftware: Archiv entpacken und StockUploader.exe starten",
+        "Die Fotos müssen JPEG-Dateien sein",
+        "Ein Shutterstock-Konto als Anbieter; ein KI-Schlüssel ist optional"
+      ],
+      "privacy": "Ihre Fotos bleiben auf Ihrem Computer, außer denen, die Sie zur Bildagentur hochladen. Nutzen Sie die Ein-Klick-Beschreibung mit einem KI-Dienst, werden kleine Kopien der Bilder an diesen Dienst gesendet, der dafür Kosten berechnen kann. Ihr Shutterstock-Passwort liegt in der Windows-Anmeldeinformationsverwaltung, nicht in einer einfachen Datei.",
+      "faq": [
+        {
+          "q": "Muss ich für einen KI-Dienst bezahlen?",
+          "a": "Nein. Ein Schlüssel ist nur für die Ein-Klick-Variante nötig. Alternativ kopieren Sie mit „Anfrage für KI kopieren“ den Text in einen KI-Assistenten, den Sie schon nutzen, oder schreiben die Beschreibungen selbst."
+        },
+        {
+          "q": "Reicht es die Fotos für mich ein?",
+          "a": "Fast. Es lädt sie hoch und erstellt eine CSV-Datei, aber den letzten Schritt, die Datei auswählen und auf „Submit“ klicken, machen Sie selbst auf der Shutterstock-Website, weil die Seite keinen anderen Weg bietet."
+        },
+        {
+          "q": "Verändert es meine Originalfotos?",
+          "a": "Nein. Bearbeitete Versionen werden in einem eigenen Ordner daneben gespeichert, die Originale bleiben wie sie sind."
+        },
+        {
+          "q": "Wie bekomme ich Fotos vom Handy?",
+          "a": "Klicken Sie auf „Vom Handy“ und scannen Sie den QR-Code mit der Handykamera. Handy und Computer müssen im selben WLAN sein. Windows fragt beim ersten Mal nach Netzwerkzugriff; erlauben Sie ihn."
+        },
+        {
+          "q": "Windows sagt, das Programm sei unbekannt. Ist es sicher?",
+          "a": "Windows zeigt diese Warnung bei jedem neuen Programm ohne kostenpflichtige digitale Signatur. Wählen Sie „Weitere Informationen“ und dann „Trotzdem ausführen“."
+        },
+        {
+          "q": "Was wird nicht unterstützt?",
+          "a": "Vorerst nur JPEG-Fotos: kein Video, keine Vektordateien, kein RAW oder HEIC. Die Qualität der Beschreibungen hängt von der gewählten KI ab, das Programm selbst erfindet nichts."
+        }
+      ]
+    },
+    "ua": {
+      "tagline": "Підготуйте фото до продажу на Shutterstock крок за кроком.",
+      "description": "StockUploader перевіряє, чи приймуть ваші фото, допомагає скласти опис і ключові слова для кожного, дає змогу трохи їх підправити та надсилає на стокову площадку. Ви все контролюєте: програма показує, що ще потребує вашої уваги.",
+      "features": [
+        "Спершу перевіряє кожне фото й відкладає ті, які площадка відхилить: замалі, завеликі або не JPEG",
+        "Описи та ключові слова трьома способами: одним кліком через ключ ШІ-сервісу, через ШІ-помічника, яким ви вже користуєтеся, або вручну",
+        "Позначає помаранчевою рамкою з підказкою місця, де відповідь знаєте лише ви: місце зйомки, вид тварини, помітний логотип",
+        "Простий редактор: обрізання, вирівнювання горизонту, світло й колір, прибирання плями чи логотипа. Ваші оригінали ніколи не змінюються",
+        "Приймає фото з телефона через Wi-Fi: скануєте QR-код, на телефон нічого встановлювати не треба",
+        "Завантажує на площадку й продовжує після обриву зв’язку, а потім готує файл для останнього кроку на сайті",
+        "Світла й темна тема, англійська, німецька та українська"
+      ],
+      "requirements": [
+        "Windows 10 або 11, 64-розрядна",
+        "Без встановлення й додаткових програм: розпакуйте архів і запустіть StockUploader.exe",
+        "Фото мають бути файлами JPEG",
+        "Акаунт автора на Shutterstock; ключ ШІ-сервісу необов’язковий"
+      ],
+      "privacy": "Ваші фото залишаються на вашому комп’ютері, окрім тих, що ви самі завантажуєте на площадку. Якщо ви користуєтеся описом в один клік через ШІ-сервіс, малі копії зображень надсилаються цьому сервісу, який може брати плату. Пароль від Shutterstock зберігається в Диспетчері облікових даних Windows, а не у звичайному файлі.",
+      "faq": [
+        {
+          "q": "Чи треба платити за ШІ-сервіс?",
+          "a": "Ні. Ключ потрібен лише для варіанта в один клік. Натомість можна натиснути «Копіювати запит для ШІ» і вставити його ШІ-помічнику, яким ви вже користуєтеся, або написати описи самостійно."
+        },
+        {
+          "q": "Чи подає програма фото замість мене?",
+          "a": "Майже. Вона завантажує їх і готує файл CSV, але останній крок, вибрати цей файл і натиснути Submit, ви робите самі на сайті Shutterstock, бо інакше сайт не дозволяє."
+        },
+        {
+          "q": "Чи змінить вона мої оригінали?",
+          "a": "Ні. Відредаговані версії зберігаються поруч в окремій папці, а оригінали лишаються як були."
+        },
+        {
+          "q": "Як отримати фото з телефона?",
+          "a": "Натисніть «З телефона» й проскануйте QR-код камерою телефона. Телефон і комп’ютер мають бути в одній мережі Wi-Fi. Під час першого разу Windows запитає доступ до мережі; дозвольте його."
+        },
+        {
+          "q": "Windows пише, що програма невідома. Це безпечно?",
+          "a": "Windows показує таке попередження для кожної нової програми без платного цифрового підпису. Оберіть «Докладніше», потім «Усе одно виконати»."
+        },
+        {
+          "q": "Що не підтримується?",
+          "a": "Поки що лише фото JPEG: без відео, векторних файлів, RAW і HEIC. Якість описів залежить від обраного ШІ, а сама програма нічого не вигадує."
+        }
+      ]
+    }
+  }
+}

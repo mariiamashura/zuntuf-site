@@ -1,0 +1,138 @@
+---
+// 404: a black room in the fog. Concentric yellow rings, "404" and the message barely flicker and glow.
+// The pointer carries a soft light; moving leaves ripples; a click sends a bigger one. Standalone (no site chrome).
+import '../styles/global.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import { t, locales, localePath, langLabels, htmlLang } from '../i18n';
+
+const radii = [64, 118, 182, 256, 338, 432];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0b0906" />
+    <title>{t('en', 'meta.notFound.title')}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="nf">
+    <canvas class="ripples" aria-hidden="true"></canvas>
+    <div class="mist mist--a" aria-hidden="true"></div>
+    <div class="mist mist--b" aria-hidden="true"></div>
+
+    <!-- rings: a blurred copy for the glow, a sharp copy on top; each ring flickers on its own clock -->
+    <div class="rings" data-parallax aria-hidden="true">
+      {['glow', 'sharp'].map((layer) => (
+        <svg class={`rings__svg rings__svg--${layer}`} data-depth={layer === 'glow' ? 0.35 : 0.5} viewBox="-500 -500 1000 1000" focusable="false">
+          {radii.map((r, i) => (
+            <circle r={r} class={`ring ring--${i}`} style={`--d:${(7 + i * 1.7).toFixed(1)}s;--o:${(i * -1.9).toFixed(1)}s`} />
+          ))}
+        </svg>
+      ))}
+      <svg class="rings__svg rings__svg--dash" data-depth="0.8" viewBox="-500 -500 1000 1000" focusable="false">
+        <circle r="300" class="ring ring--dash" /><circle r="392" class="ring ring--dash ring--dash2" />
+      </svg>
+    </div>
+
+    <div class="light" aria-hidden="true"></div>
+    <div class="shade" aria-hidden="true"></div>
+
+    <main class="stage">
+      <h1 class="num" id="num">404</h1>
+      <div class="msgs">
+        {locales.map((l, i) => (
+          <p class="msg" lang={htmlLang(l)} style={`--o:${(i * -2.3).toFixed(1)}s`}>{t(l, 'notFound.heading')}</p>
+        ))}
+      </div>
+      <nav class="back" aria-label="Zuntuf">
+        {locales.map((l) => (<a href={localePath(l)} lang={htmlLang(l)} hreflang={htmlLang(l)}>{t(l, 'notFound.home')} · {langLabels[l].short}</a>))}
+      </nav>
+    </main>
+
+    <script>
+      import { createRipples } from '../scripts/ripples';
+      import '../scripts/parallax';
+      const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const canvas = document.querySelector<HTMLCanvasElement>('.ripples');
+      const rip = canvas && !calm ? createRipples(canvas) : null;
+      rip?.setMode('dark');
+
+      // a soft light follows the pointer (a small element moved with transform, so it costs nothing to repaint)
+      const light = document.querySelector<HTMLElement>('.light')!;
+      let tx = innerWidth / 2, ty = innerHeight / 2, x = tx, y = ty, raf = 0;
+      const step = () => {
+        x += (tx - x) * 0.09; y += (ty - y) * 0.09;
+        light.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+        raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.5 ? requestAnimationFrame(step) : 0;
+      };
+      const move = (e: PointerEvent) => { tx = e.clientX; ty = e.clientY; if (!raf) raf = requestAnimationFrame(step); };
+      light.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      addEventListener('pointermove', move, { passive: true });
+      addEventListener('pointerdown', (e) => {
+        move(e);
+        if (calm) return;
+        rip?.spawn(e.clientX, e.clientY, Math.max(innerWidth, innerHeight) * 0.5, 2.8, 1.5);
+        const n = document.getElementById('num')!;
+        n.classList.remove('pulse'); void n.offsetWidth; n.classList.add('pulse');
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  /* the same typeface as everywhere on the site (IBM Plex Mono, loaded above) */
+  body.nf { margin: 0; min-height: 100dvh; display: grid; place-items: center; background: #0b0906; color: #E8AA20; overflow: hidden; position: relative; font-family: var(--font); }
+  .nf .num, .nf .msg, .nf .back a { font-family: var(--font); }
+  .nf .ripples { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; display: none; }
+
+  /* fog: two huge soft glows drifting slowly (transform only) */
+  .mist { position: fixed; z-index: 0; width: 130vmax; height: 130vmax; pointer-events: none; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(232, 170, 32, .10), rgba(232, 170, 32, .035) 55%, transparent 100%); }
+  .mist--a { left: -40vmax; top: -50vmax; animation: drift-a 38s ease-in-out infinite alternate; }
+  .mist--b { right: -50vmax; bottom: -60vmax; animation: drift-b 46s ease-in-out infinite alternate; background: radial-gradient(closest-side, rgba(232, 150, 40, .07), rgba(232, 150, 40, .02) 55%, transparent 100%); }
+  @keyframes drift-a { to { transform: translate(14vmax, 10vmax) scale(1.08); } }
+  @keyframes drift-b { to { transform: translate(-12vmax, -8vmax) scale(1.1); } }
+
+  /* the pointer's light */
+  .light { position: fixed; left: 0; top: 0; z-index: 1; width: 62vmin; height: 62vmin; pointer-events: none; border-radius: 50%; mix-blend-mode: screen;
+    background: radial-gradient(closest-side, rgba(255, 196, 70, .20), rgba(232, 170, 32, .07) 55%, transparent 100%); will-change: transform; }
+
+  /* the centre, behind the text, sinks into the dark: the inner rings are almost invisible */
+  .shade { position: fixed; left: 50%; top: 50%; z-index: 2; width: min(80vmin, 840px); aspect-ratio: 1; transform: translate(-50%, -50%); pointer-events: none; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(11, 9, 6, .97) 0%, rgba(11, 9, 6, .92) 34%, rgba(11, 9, 6, .6) 62%, rgba(11, 9, 6, .2) 84%, rgba(11, 9, 6, 0) 100%); }
+
+  /* rings */
+  .rings { position: fixed; inset: 0; z-index: 1; display: grid; place-items: center; pointer-events: none; }
+  .rings__svg { grid-area: 1 / 1; width: min(135vmin, 1100px); height: auto; overflow: visible; }
+  .ring { fill: none; stroke: #E8AA20; stroke-width: 1.6; opacity: .22; animation: ring-flicker var(--d, 8s) ease-in-out infinite; animation-delay: var(--o, 0s); }
+  .rings__svg--glow { filter: blur(7px); animation: glow-breathe 9s ease-in-out infinite; }
+  .rings__svg--glow .ring { stroke-width: 4; }
+  .ring--dash { stroke-dasharray: 3 16; stroke-width: 1.4; opacity: .3; animation: none; }
+  .rings__svg--dash { animation: slow-spin 140s linear infinite; }
+  .ring--dash2 { stroke-dasharray: 1 22; opacity: .22; }
+  @keyframes ring-flicker { 0%, 100% { opacity: .14; } 18% { opacity: .30; } 31% { opacity: .20; } 47% { opacity: .34; } 66% { opacity: .16; } 83% { opacity: .26; } }
+  @keyframes glow-breathe { 0%, 100% { opacity: .55; } 50% { opacity: .9; } }
+  @keyframes slow-spin { to { rotate: 360deg; } }
+
+  /* text: yellow, barely flickering, softly glowing as if seen through fog */
+  .stage { position: relative; z-index: 3; display: grid; justify-items: center; gap: 1.1rem; padding: 2rem var(--gutter); text-align: center; }
+  .num { margin: 0; font-size: clamp(6rem, 24vw, 17rem); font-weight: 500; letter-spacing: -.04em; line-height: .9; color: #E8AA20;
+    text-shadow: 0 0 .22em rgba(232, 170, 32, .55), 0 0 .7em rgba(232, 150, 30, .28), 0 0 1.6em rgba(232, 130, 30, .14);
+    animation: flicker 7.5s ease-in-out infinite; }
+  .num.pulse { animation: flicker 7.5s ease-in-out infinite, pulse .9s ease-out; }
+  .msgs { display: grid; gap: .35rem; }
+  .msg { margin: 0; font-size: clamp(1rem, 2.2vw, 1.5rem); color: #E8AA20; opacity: .78; text-shadow: 0 0 .5em rgba(232, 170, 32, .5), 0 0 1.4em rgba(232, 150, 30, .2); animation: flicker-soft 9s ease-in-out infinite; animation-delay: var(--o, 0s); }
+  .back { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1.6rem; margin-top: 1.2rem; }
+  .back a { color: #E8AA20; opacity: .55; text-decoration: none; padding: .55rem .2rem; font-size: .9rem; text-shadow: 0 0 .6em rgba(232, 170, 32, .35); transition: opacity .3s ease, text-shadow .3s ease; }
+  .back a:hover, .back a:focus-visible { opacity: 1; text-shadow: 0 0 .5em rgba(255, 196, 70, .9), 0 0 1.4em rgba(232, 150, 30, .5); outline: none; text-decoration: underline; text-underline-offset: .3em; text-decoration-thickness: 1px; }
+  @keyframes flicker { 0%, 100% { opacity: .86; } 8% { opacity: .78; } 9% { opacity: .9; } 23% { opacity: .82; } 41% { opacity: .92; } 44% { opacity: .8; } 63% { opacity: .88; } 79% { opacity: .76; } 82% { opacity: .9; } }
+  @keyframes flicker-soft { 0%, 100% { opacity: .78; } 20% { opacity: .66; } 37% { opacity: .82; } 58% { opacity: .7; } 76% { opacity: .84; } }
+  @keyframes pulse { 0% { text-shadow: 0 0 .5em rgba(255, 210, 90, .95), 0 0 1.4em rgba(232, 160, 30, .6), 0 0 2.6em rgba(232, 130, 30, .35); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mist, .ring, .rings__svg, .num, .msg { animation: none !important; }
+  }
+</style>

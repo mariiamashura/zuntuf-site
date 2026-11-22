@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zuntuf.workers.dev/sitemap-index.xml

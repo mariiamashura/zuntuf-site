@@ -1,0 +1,19 @@
+{
+  "draft": true,
+  "name": "Example Tool",
+  "order": 1,
+  "accent": "mustard",
+  "category": "utilities",
+  "status": "coming-soon",
+  "i18n": {
+    "en": {
+      "tagline": "A sample entry that shows how a tool is added.",
+      "description": "This is a placeholder. Copy this file, rename it (the filename becomes the URL), replace the data with real information and set draft to false. Delete this file when the first real tool exists.",
+      "features": ["Fill in only facts that are true", "Missing fields are simply not shown", "German and Ukrainian fall back to English"]
+    },
+    "de": {
+      "tagline": "Ein Beispieleintrag, der zeigt, wie ein Werkzeug hinzugefügt wird.",
+      "description": "Dies ist ein Platzhalter. Datei kopieren, umbenennen (der Dateiname wird zur URL), Daten durch echte Angaben ersetzen und draft auf false setzen. Diese Datei löschen, sobald das erste echte Werkzeug existiert."
+    }
+  }
+}

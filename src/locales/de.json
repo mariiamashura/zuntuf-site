@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "home": {
+      "title": "Zuntuf",
+      "description": "Zuntuf: Windows-Programme eines unabhängigen Autors. Dateimanager BowerFS, StockUploader für Stockfotos und Svitko, ein Bauspiel für Kinder."
+    },
+    "about": {
+      "title": "Über — Zuntuf",
+      "description": "Über den Autor von Zuntuf: Grafikdesigner und Künstler aus Kyjiw, der Software gemeinsam mit KI-Werkzeugen baut."
+    },
+    "contact": {
+      "title": "Kontakt — Zuntuf",
+      "description": "Kontakt zum Autor von Zuntuf: E-Mail, GitHub und LinkedIn."
+    },
+    "projects": {
+      "title": "Projekte — Zuntuf",
+      "description": "Programme und ein Spiel von Zuntuf: Dateimanager BowerFS, StockUploader für Stockfotografie, Svitko für Kinder."
+    },
+    "privacy": {
+      "title": "Datenschutz — Zuntuf",
+      "description": "Was diese Website erfasst und was nicht."
+    },
+    "notFound": {
+      "title": "Seite nicht gefunden — Zuntuf",
+      "description": "Manche Seiten sind nur Wege, die woanders hinführen."
+    },
+    "lab": {
+      "title": "Labor — Zuntuf",
+      "description": "Experimente, absichtlich unvollendet."
+    },
+    "keywords": "Zuntuf, BowerFS, StockUploader, Svitko, Dateimanager für Windows, Duplikate finden, Stockfotos hochladen, Shutterstock, Kinderspiel, Zählen und Lesen lernen, unabhängige Software, Mariia Mashura, KI-gestützte Entwicklung",
+    "ogAlt": "Zuntuf: kleine Programme und ein Spiel, gezeichnet und gebaut von einem Autor"
+  },
+  "nav": {
+    "home": "Start",
+    "tools": "Werkzeuge",
+    "projects": "Projekte",
+    "lab": "Labor",
+    "about": "Über",
+    "contact": "Kontakt",
+    "privacy": "Datenschutz",
+    "skipIntro": "Klicken oder Taste drücken zum Überspringen",
+    "back": "Zurück",
+    "skip": "Zum Inhalt springen",
+    "language": "Sprache",
+    "mainNav": "Hauptnavigation",
+    "menu": "Menü",
+    "close": "Schließen"
+  },
+  "home": {
+    "tagline": "Manches davon ist nützlich. Manches ist Spiel.",
+    "signature": "Von einem Paar Hände gemacht",
+    "toolsHeading": "Werkzeuge",
+    "empty": "Die ersten Werkzeuge werden noch sie selbst.",
+    "prompt": "./tools --play"
+  },
+  "about": {
+    "heading": "Über",
+    "p1": "Das Projekt wird mit einem KI-gestützten Entwicklungsansatz umgesetzt: KI dient als Entwicklungswerkzeug, während Konzept, Design und alle wichtigen Entscheidungen vom Autor stammen.",
+    "links": "Links",
+    "toolsHeading": "Werkzeuge",
+    "toolsDesign": "Design und Kreativität",
+    "toolsAi": "KI-gestützte Entwicklung"
+  },
+  "contact": {
+    "heading": "Kontakt",
+    "intro": "Ein Brief ist die älteste Brücke zwischen zwei Köpfen. Die Adresse steht unten.",
+    "email": "E-Mail",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "copyLabel": "E-Mail-Adresse kopieren",
+    "itch": "itch.io",
+    "support": "Die Arbeit unterstützen",
+    "supportText": "Spenden über Monobank",
+    "qrLabel": "QR-Code für die Monobank-Spardose"
+  },
+  "projects": {
+    "heading": "Projekte",
+    "intro": "Was der Autor noch zu benennen lernt.",
+    "empty": "Noch ohne Namen. Noch im Werden."
+  },
+  "lab": {
+    "heading": "Labor",
+    "intro": "Experimente, absichtlich unvollendet, denn fertige Dinge hören auf, Fragen zu stellen.",
+    "empty": "Die Werkstatt steht leer, vorerst. Auch Abwesenheit ist ein Material.",
+    "launch": "Starten"
+  },
+  "privacy": {
+    "heading": "Datenschutz",
+    "p1": "Diese Website verwendet keine Cookies, keine Analyse- und Tracking-Dienste und erhebt keine personenbezogenen Daten.",
+    "p2": "Die Seite wird bei Cloudflare gehostet. Cloudflare kann technische Anfragedaten wie die IP-Adresse verarbeiten, um die Seiten auszuliefern.",
+    "p3": "Für Links zu anderen Websites, etwa GitHub oder LinkedIn, gelten deren eigene Datenschutzbestimmungen.",
+    "no1": "Keine Cookies",
+    "no2": "Keine Analyse",
+    "no3": "Kein Tracking",
+    "no4": "Keine personenbezogenen Daten"
+  },
+  "tool": {
+    "allFeatures": "Alle Funktionen im Detail",
+    "featuresTitle": "Alle Funktionen",
+    "features": "Funktionen",
+    "platforms": "Plattformen",
+    "languages": "Sprachen",
+    "version": "Version",
+    "status": "Status",
+    "category": "Kategorie",
+    "download": "Herunterladen",
+    "downloadFor": "Herunterladen für {os}",
+    "requirements": "Systemanforderungen",
+    "changelog": "Änderungsprotokoll",
+    "faq": "Häufige Fragen",
+    "privacy": "Datenschutz",
+    "website": "Website",
+    "docs": "Dokumentation",
+    "source": "Quellcode",
+    "related": "Ähnliche Werkzeuge",
+    "screenshots": "Screenshots",
+    "comingSoon": "Demnächst",
+    "size": "Größe",
+    "pending": "Die Geschichte dieses Werkzeugs wird noch geschrieben."
+  },
+  "status": {
+    "released": "Veröffentlicht",
+    "beta": "Beta",
+    "coming-soon": "Demnächst"
+  },
+  "category": {
+    "photography": "Fotografie",
+    "files": "Dateiverwaltung",
+    "productivity": "Produktivität",
+    "creative": "Kreativwerkzeuge",
+    "utilities": "Dienstprogramme",
+    "experimental": "Experimentell"
+  },
+  "os": {
+    "windows": "Windows",
+    "macos": "macOS",
+    "linux": "Linux",
+    "android": "Android",
+    "ios": "iOS",
+    "web": "Web"
+  },
+  "footer": {
+    "rights": "© {year} Mariia Mashura · Zuntuf"
+  },
+  "notFound": {
+    "heading": "Seite nicht gefunden",
+    "text": "Diese Seite existiert nicht oder hat sich in der Ferne aufgelöst. Jeder Weg endet irgendwo, dieser hier.",
+    "home": "Zurück zum Start",
+    "hint": "Bewege den Zeiger: Die Ringe folgen ihm, wie der Gedanke dem Denkenden folgt."
+  },
+  "film": {
+    "title": "Der Kopf",
+    "sub": "Ein Film in zwei Minuten",
+    "replay": "Nochmal ansehen",
+    "back": "Zurück zum Stern",
+    "skip": "Überspringen",
+    "end": "Ende",
+    "label": "Film öffnen: Der Kopf",
+    "play": "Ansehen"
+  },
+  "fallbackNotice": "Noch nicht übersetzt; auf Englisch angezeigt."
+}

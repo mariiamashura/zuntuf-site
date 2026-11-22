@@ -1,0 +1,37 @@
+---
+// Root: static hosting cannot read Accept-Language, so choose client-side; default English.
+const en = new URL('/en/', Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zuntuf</title>
+    <link rel="canonical" href={en} />
+    <link rel="alternate" hreflang="x-default" href={en} />
+    <link rel="alternate" hreflang="en" href={en} />
+    <link rel="alternate" hreflang="de" href={new URL('/de/', Astro.site).href} />
+    <link rel="alternate" hreflang="uk" href={new URL('/ua/', Astro.site).href} />
+    <meta name="robots" content="noindex" />
+    <script is:inline>
+      (function () {
+        var ok = ['en', 'de', 'ua'], l = 'en';
+        try {
+          var s = localStorage.getItem('zuntuf-lang');
+          if (s === 'uk') s = 'ua';
+          if (ok.indexOf(s) > -1) l = s;
+          else {
+            var n = (navigator.language || 'en').slice(0, 2).toLowerCase();
+            if (n === 'uk') n = 'ua';
+            if (ok.indexOf(n) > -1) l = n;
+          }
+        } catch (e) {}
+        location.replace('/' + l + '/');
+      })();
+    </script>
+  </head>
+  <body style="font-family:monospace;background:#F5EED8;color:#512B19">
+    <p><a href="/en/">English</a> · <a href="/de/">Deutsch</a> · <a href="/ua/">Українська</a></p>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+---
+import Base from '../../layouts/Base.astro';
+import PathChip from '../../components/PathChip.astro';
+import { t, type Lang } from '../../i18n';
+import { langStaticPaths } from '../../lib/paths';
+import { site } from '../../config/site';
+import { inkOutline } from '../../lib/wheel';
+const pts = (p: [number, number][]) => p.map((q) => q.join(',')).join(' ');
+const ARROW: [number, number][] = [[2, 34], [62, 34], [62, 4], [118, 50], [62, 96], [62, 66], [2, 66]];
+const TRI: [number, number][] = [[50, 6], [94, 92], [6, 92]];
+const BAR: [number, number][] = [[3, 3], [197, 3], [197, 37], [3, 37]];
+export const getStaticPaths = langStaticPaths;
+const lang = Astro.params.lang as Lang;
+const strip = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '');
+const others = [
+  site.social.github ? { key: 'github', label: t(lang, 'contact.github'), href: site.social.github, text: strip(site.social.github), cls: 'ochre' } : null,
+  site.social.linkedin ? { key: 'linkedin', label: t(lang, 'contact.linkedin'), href: site.social.linkedin, text: strip(site.social.linkedin), cls: 'cream' } : null,
+  site.social.itch ? { key: 'itch', label: t(lang, 'contact.itch'), href: site.social.itch, text: strip(site.social.itch), cls: 'ochre' } : null,
+  site.support ? { key: 'support', label: t(lang, 'contact.support'), href: site.support, text: t(lang, 'contact.supportText'), cls: 'cream' } : null,
+].filter((x): x is NonNullable<typeof x> => x !== null);
+---
+<Base lang={lang} title={t(lang, 'meta.contact.title')} description={t(lang, 'meta.contact.description')} path="contact" wide>
+  <div class="contact" data-parallax>
+    <!-- decorative floating pieces that drift against the pointer -->
+    <svg class="float float--tri" data-depth="0.9" viewBox="0 0 100 100" aria-hidden="true"><polygon class="i" points={inkOutline(TRI, 3, 0.8, 3.2)} /><polygon points={pts(TRI)} /></svg>
+    <svg class="float float--bar" data-depth="-0.7" viewBox="0 0 200 40" aria-hidden="true"><polygon class="i" points={inkOutline(BAR, 5, 0.8, 3.2)} /><polygon points={pts(BAR)} /></svg>
+    <svg class="float float--circ" data-depth="0.5" viewBox="0 0 100 100" aria-hidden="true"><circle class="i" cx="51.2" cy="50.6" r="46" /><circle cx="50" cy="50" r="44" /><circle class="i" cx="50.8" cy="50.5" r="27.8" /><circle cx="50" cy="50" r="26" /></svg>
+
+    <div class="contact__head">
+      <PathChip path="contact" />
+      <h1 class="reveal" style="--i:0">{t(lang, 'contact.heading')}</h1>
+      <p class="reveal indent" style="--i:1">{t(lang, 'contact.intro')}</p>
+    </div>
+
+    <ul class="tiles" data-focus>
+      <li class="fly-l" style="--i:0">
+        <div class="ctile ctile--mail">
+          <a class="ctile__main" href={`mailto:${site.email}`}>
+            <svg class="ctile__arrow" viewBox="0 0 120 100" aria-hidden="true"><polygon class="i" points={inkOutline(ARROW, 11, 0.9, 3.6)} /><polygon points={pts(ARROW)} /></svg>
+            <span class="ctile__box ink"><small>{t(lang, 'contact.email')}</small>{site.email}</span>
+          </a>
+          <button class="copy ink ink-3" type="button" data-copy={site.email} data-done={t(lang, 'contact.copied')} aria-label={t(lang, 'contact.copyLabel')}>{t(lang, 'contact.copy')}</button>
+        </div>
+      </li>
+      {others.map((o, i) => (
+        <li class={i % 2 === 0 ? 'fly-r' : 'fly-l'} style={`--i:${i + 1}`}>
+          <a class={`ctile ctile--link ctile--${o.cls}`} href={o.href} rel="me noopener">
+            <span class={`ctile__box ink ${i % 2 ? 'ink-3' : 'ink-2'}${o.key === 'support' ? ' ctile__box--qr' : ''}`}>
+              <span class="ctile__txt"><small>{o.label}</small>{o.text}</span>
+              {o.key === 'support' && <img class="ctile__qr" src="/support/mono-qr.svg" width="112" height="112" alt={t(lang, 'contact.qrLabel')} loading="lazy" />}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) => {
+    const label = b.textContent;
+    b.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(b.dataset.copy!); } catch { return; }
+      b.textContent = b.dataset.done ?? '';
+      b.classList.add('is-done');
+      setTimeout(() => { b.textContent = label; b.classList.remove('is-done'); }, 1600);
+    });
+  });
+</script>
+
+<style>
+  .contact { position: relative; padding-block: var(--page-top) 3rem; }
+  .contact__head { position: relative; z-index: 1; }
+  .tiles { list-style: none; padding: 0; display: grid; gap: 1.6rem; position: relative; z-index: 1; max-width: 62%; }
+  .tiles li:nth-child(2) { margin-left: clamp(0px, 2vw, 30px); }
+  .tiles li:nth-child(3) { margin-left: clamp(0px, 4vw, 60px); }
+
+  .ctile { display: flex; align-items: stretch; gap: .8rem; color: var(--brown); text-decoration: none; }
+  .ctile__main { display: inline-flex; align-items: stretch; text-decoration: none; color: inherit; flex: 1; min-width: 0; }
+  .ctile__arrow { width: clamp(56px, 8vw, 90px); flex: none; margin-right: -4px; transition: transform .22s ease; }
+  .ctile__arrow polygon { fill: var(--coral); stroke: none; }
+  .ctile__arrow polygon.i { fill: var(--brown); }
+  .ctile__box { display: block; background: var(--mustard); padding: calc(.9rem + 2px) calc(1.4rem + 2px); font-size: clamp(1.1rem, 2.2vw, 1.7rem); line-height: 1.2; overflow-wrap: anywhere; flex: 1; transition: transform .22s ease, background-color .22s ease; }
+  .ctile__box small { display: block; font-size: .8rem; margin-bottom: .2em; opacity: .8; }
+  .ctile__main:hover .ctile__arrow { transform: translateX(10px); }
+  .ctile__main:hover .ctile__box, .ctile--link:hover .ctile__box { transform: translate(-4px, -4px); background: var(--coral); color: var(--char); }
+  .ctile--link { display: block; position: relative; }
+  .ctile--link .ctile__box { font-size: clamp(.95rem, 1.8vw, 1.35rem); overflow-wrap: anywhere; }
+  .ctile--link .ctile__box { position: relative; }
+  .ctile--ochre .ctile__box { background: var(--ochre); color: var(--cream); }
+  .ctile--cream .ctile__box { background: var(--cream); }
+  .ctile--link .ctile__box::after { content: ''; position: absolute; right: 0; bottom: 0; z-index: 2; width: 34px; height: 34px; background: var(--coral); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+  .ctile__box--qr { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .ctile__txt { display: block; min-width: 0; }
+  /* the code keeps its own cream plate, so it stays high-contrast when the tile turns coral on hover */
+  .ctile__qr { flex: none; width: 112px; height: 112px; display: block; margin-right: .4rem; }
+
+  .copy { align-self: stretch; font: inherit; color: var(--brown); background: var(--cream); padding: 0 1.1rem; min-width: 7.5rem; min-height: 44px; cursor: pointer; transition: transform .18s ease, background-color .18s ease; }
+  .copy:hover { transform: translate(-3px, -3px); background: var(--mustard); }
+  .copy.is-done { background: var(--coral); color: var(--char); }
+
+  .float { position: absolute; pointer-events: none; z-index: 0; overflow: visible; }
+  .float polygon, .float circle { stroke: none; }
+  .float .i { fill: var(--brown); }
+  .float--tri { right: 6%; top: 4%; width: clamp(70px, 10vw, 140px); }
+  .float--tri polygon { fill: var(--mustard); }
+  /* the triangle points down-left, at the e-mail address, and rocks back and forth (the `rotate` property leaves the parallax transform alone) */
+  .float--tri { rotate: -128deg; transform-origin: 50% 62%; }
+  @media (prefers-reduced-motion: no-preference) { .float--tri { animation: tri-rock 3.6s ease-in-out infinite; } }
+  @keyframes tri-rock { 0%, 100% { rotate: -140deg; } 50% { rotate: -116deg; } }
+  .float--bar { right: 3%; top: 46%; width: clamp(90px, 14vw, 200px); }
+  .float--bar polygon:not(.i) { fill: var(--coral); }
+  .float--circ { right: 5%; bottom: 8%; width: clamp(80px, 11vw, 150px); }
+  .float--circ circle:nth-of-type(2) { fill: var(--cream); }
+  .float--circ circle:nth-of-type(4) { fill: var(--ochre); }
+  @media (max-width: 899px) { .float { display: none; } .tiles { max-width: none; } .tiles li:nth-child(n) { margin-left: 0; } .ctile { flex-wrap: wrap; } .ctile__main { flex: 1 1 100%; } .copy { flex: 1 1 100%; min-height: 44px; } .ctile__box { font-size: clamp(1rem, 4.6vw, 1.4rem); } }
+</style>

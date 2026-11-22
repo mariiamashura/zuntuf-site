@@ -1,0 +1,133 @@
+---
+// "The Head": a two-minute film. The face from the logo meets the other characters of the site: Svitko, BowerFS,
+// StockUploader, the sun, the smiley and the cursor. A hand-timed sequence (src/scripts/film.ts); the lines and
+// names come from the locale files (film.l1 … film.l27, film.n_*).
+import Base from '../../layouts/Base.astro';
+import FaceArt from '../../components/FaceArt.astro';
+import RingsMark from '../../components/RingsMark.astro';
+import SoftwareGlyph from '../../components/SoftwareGlyph.astro';
+import SvitkoArt from '../../components/SvitkoArt.astro';
+import ToolArt from '../../components/ToolArt.astro';
+import { t, localePath, type Lang } from '../../i18n';
+import { langStaticPaths } from '../../lib/paths';
+export const getStaticPaths = langStaticPaths;
+const lang = Astro.params.lang as Lang;
+// The film itself (captions, voice, its buttons) is always in English, whatever language the site is in.
+const talk = true;
+const tf = (k: string) => t('en', `film.${k}`);
+const lines = talk ? Array.from({ length: 27 }, (_, i) => tf(`l${i + 1}`)) : [];
+const names = { head: tf('title'), svitko: 'Svitko', bower: 'BowerFS', stock: 'StockUploader', cursor: tf('n_cursor'), sun: tf('n_sun'), smile: tf('n_smile') };
+---
+<Base lang={lang} title={`${t(lang, 'film.title')} — Zuntuf`} description={t(lang, 'film.sub')} path="film" wide>
+  <section class="film" lang="en" data-film data-talk={talk ? '1' : '0'} data-lines={JSON.stringify(lines)} data-names={JSON.stringify(names)}>
+    <div class="film__stage ink" data-stage>
+      <svg class="film__leash" data-leash viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line data-leash-line x1="6" y1="9" x2="50" y2="50" /></svg>
+      <span class="film__anchor" data-anchor aria-hidden="true"></span>
+
+      <div class="film__rings" data-prop="rings" aria-hidden="true"><RingsMark thin /></div>
+      <div class="film__bar ink ink-3" data-prop="bar" aria-hidden="true"><i data-bar-fill></i><span>99%</span></div>
+
+      <div class="film__actor" data-actor="svitko" aria-hidden="true"><SvitkoArt /></div>
+      <div class="film__actor" data-actor="bower" aria-hidden="true"><ToolArt slug="bowerfs" art="bowerfs" /></div>
+      <div class="film__actor" data-actor="stock" aria-hidden="true"><ToolArt slug="stockuploader" art="stockuploader" /></div>
+      <div class="film__actor" data-actor="sun" aria-hidden="true"><SoftwareGlyph kind="sun" /></div>
+      <div class="film__actor" data-actor="smile" aria-hidden="true"><SoftwareGlyph kind="smile" /></div>
+      <div class="film__actor" data-actor="head" aria-hidden="true"><FaceArt /></div>
+      <div class="film__actor" data-actor="cursor" aria-hidden="true"><SoftwareGlyph kind="cursor" /></div>
+
+      <div class="film__end film__start" data-start>
+        <h1>{tf('title')}</h1>
+        <p>{tf('sub')}</p>
+        <div class="film__btns">
+          {talk && <button class="tile ink" type="button" data-play-sound>▶ {tf('play_sound')}</button>}
+          <button class={talk ? 'tile tile--cream ink ink-2' : 'tile ink'} type="button" data-play-mute>{talk ? tf('play_mute') : `▶ ${tf('play')}`}</button>
+        </div>
+        {talk && <p class="film__note" data-note hidden>{tf('no_voice')}</p>}
+      </div>
+
+      <div class="film__end" data-end hidden>
+        <h1>{tf('end')}</h1>
+        {talk && <p>{lines[26]}</p>}
+        <div class="film__btns">
+          <button class="tile tile--cream ink" type="button" data-replay>{tf('replay')}</button>
+          <a class="tile ink ink-2" href={localePath(lang)}>{tf('back')}</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="film__cap" data-cap data-who="narr" aria-live="polite" hidden={!talk}>{talk ? `${tf('title')} · ${tf('sub')}` : ''}</p>
+    <div class="film__meter" aria-hidden="true"><i data-meter></i></div>
+    <div class="film__tools">
+      {talk ? <button class="film__link" type="button" data-sound data-lang="en" data-on={tf('sound_on')} data-off={tf('sound_off')} data-none={tf('no_voice')} aria-pressed="false">{tf('sound_off')}</button> : <span></span>}
+      <button class="film__link" type="button" data-skip>{tf('skip')} →</button>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../../scripts/film';
+</script>
+
+<style>
+  .film { padding-block: var(--page-top) 2rem; display: grid; gap: .9rem; justify-items: center; }
+  .film__stage { position: relative; width: min(100%, 900px, calc((100dvh - 320px) * 1.6)); min-width: min(100%, 320px); aspect-ratio: 16 / 10; background: var(--cream); overflow: hidden; }
+  /* over the film the pointer is a big red arrow */
+  .film__stage, .film__stage :global(*) { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'><path d='M5 3 L5 40 L15 31 L23 46 L31 42 L23 27 L37 27 Z' fill='%23F05249' stroke='%23512B19' stroke-width='3' stroke-linejoin='miter'/></svg>") 5 3, auto !important; }
+  .film__stage > * { position: absolute; }
+  .film__leash { inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; transition: opacity .6s ease; }
+  .film__leash.is-on { opacity: 1; }
+  .film__leash line { stroke: var(--coral); stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-dasharray: 5 4; }
+  .film__anchor { left: 2.6%; top: 4%; width: 22px; height: 22px; background: var(--coral); border: 2px solid var(--brown); opacity: 0; transition: opacity .6s ease; translate: -50% -50%; }
+  .film__anchor.is-on { opacity: 1; }
+
+  /* every character moves by left/top/transform; film.ts sets those, the transitions do the travelling */
+  .film__actor { left: 50%; top: 56%; width: var(--aw, 18%); opacity: 0; transform: translate(-50%, -50%); transition: left 3s cubic-bezier(.5, 0, .3, 1), top 3s cubic-bezier(.5, 0, .3, 1), transform 3s cubic-bezier(.5, 0, .3, 1), opacity .5s ease; will-change: left, top, transform; }
+  .film__actor.is-on { opacity: 1; }
+  .film__actor.is-snap { transition-timing-function: cubic-bezier(.2, 1.6, .4, 1); }
+  .film__actor.is-hit { animation: actor-hit .5s ease; }
+  .film__actor.is-spin :global(.spiral) { animation: spiral-turn 1.1s linear infinite; }
+  @keyframes actor-hit { 0%, 100% { translate: 0 0; } 20% { translate: -2.5% 0; } 50% { translate: 2.5% 0; } 75% { translate: -1.5% 0; } }
+  [data-actor='head'] { --aw: 19%; } [data-actor='svitko'] { --aw: 17%; } [data-actor='bower'] { --aw: 22%; } [data-actor='stock'] { --aw: 22%; }
+  [data-actor='sun'] { --aw: 10%; } [data-actor='smile'] { --aw: 10%; } [data-actor='cursor'] { --aw: 7%; transition-property: left, top, transform, opacity, scale; }
+  [data-actor='cursor'].is-click { scale: .78; }
+
+  .film__rings { right: 7%; top: 8%; width: 26%; opacity: 0; transition: opacity 1.2s ease; }
+  .film__rings.is-on { opacity: 1; animation: rings-turn 40s linear infinite; }
+  @keyframes rings-turn { to { rotate: 360deg; } }
+
+  .film__bar { left: 28%; right: 28%; bottom: 5%; height: 6%; background: var(--cream); opacity: 0; transition: opacity .6s ease; overflow: hidden; }
+  .film__bar.is-on { opacity: 1; }
+  .film__bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--mustard); transition: width 4s linear; }
+  .film__bar.is-full i { width: 99%; }
+  .film__bar span { position: absolute; right: 1rem; top: 50%; translate: 0 -50%; font-size: clamp(.7rem, 1.6vw, 1rem); }
+  .film__bar.is-stuck { animation: bar-stuck .5s ease 2; }
+  @keyframes bar-stuck { 0%, 100% { translate: 0 0; } 30% { translate: -1.5% 0; } 70% { translate: 1.5% 0; } }
+
+  .film__end { inset: 0; display: grid; place-content: center; justify-items: center; gap: .7rem; text-align: center; background: color-mix(in srgb, var(--cream) 88%, transparent); padding: 1rem; }
+  .film__end[hidden] { display: none; }
+  .film__end h1 { margin: 0; }
+  .film__end p { margin: 0; font-size: .9rem; opacity: .8; }
+  .film__btns { display: flex; flex-wrap: wrap; gap: .7rem; justify-content: center; margin-top: .6rem; }
+  .film__btns .tile { font: inherit; }
+  .film__start { z-index: 5; background: var(--cream); }
+  .film__start p { opacity: 1; font-size: 1rem; }
+  .film__start h1 { font-size: clamp(2rem, 6vw, 4rem); }
+  .film__start[hidden] { display: none; }
+  .film__note { font-size: .8rem !important; opacity: .75 !important; }
+
+  /* the line being said: the narrator is italic and plain; a character is named and gets a small colour marker */
+  .film__cap[hidden] { display: none; }
+  .film__cap { margin: 0; width: min(100%, 900px); min-height: 3.6em; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: .1em .6em; text-align: center; font-size: clamp(1rem, 2vw, 1.3rem); line-height: 1.35; transition: opacity .4s ease; }
+  .film__cap.is-out { opacity: 0; }
+  .film__cap[data-who='narr'] { font-style: italic; }
+  .film__cap :global(.who) { display: inline-flex; align-items: center; gap: .5em; font-weight: 500; }
+  .film__cap :global(.who)::before { content: ''; width: .75em; height: .75em; background: var(--m, var(--mustard)); border: 2px solid var(--brown); }
+  .film__tools { width: min(100%, 900px); display: flex; justify-content: space-between; gap: 1rem; }
+  .film__link { font: inherit; font-size: .85rem; color: var(--brown); background: none; border: 0; cursor: pointer; opacity: .7; padding: .3rem 0; }
+  .film__link:hover, .film__link[aria-pressed='true'] { opacity: 1; }
+  .film__link:hover { text-decoration: underline; }
+  .film__link:disabled { opacity: .4; cursor: not-allowed; }
+  .film__meter { width: min(100%, 900px); height: 3px; background: color-mix(in srgb, var(--brown) 15%, transparent); }
+  .film__meter i { display: block; height: 100%; width: 0; background: var(--coral); }
+  @media (max-width: 599px) { [data-actor='head'] { --aw: 26%; } [data-actor='svitko'] { --aw: 24%; } [data-actor='bower'], [data-actor='stock'] { --aw: 28%; } [data-actor='sun'], [data-actor='smile'] { --aw: 14%; } .film__rings { width: 32%; } }
+</style>

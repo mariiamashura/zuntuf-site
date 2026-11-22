@@ -1,0 +1,22 @@
+---
+// Dev-only sheet for judging the wheel. Not generated in production builds.
+import '../../styles/global.css';
+import StarWheel from '../../components/StarWheel.astro';
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { name: 'wheel' } }] : [];
+}
+const demo = (n: number) =>
+  Array.from({ length: n }, (_, i) => ({ id: `d${i}`, href: '#', label: `Demo ${i + 1}`, accent: (['mustard', 'coral', 'ochre'] as const)[i % 3] }));
+---
+<html lang="en">
+  <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex" /><title>Wheel dev sheet</title></head>
+  <body>
+    <main style="padding:1rem">
+      <div style="width:min(84vh,92vw);margin:0 auto"><StarWheel items={demo(4)} label="Demo" size="min(78vh, 56vw)" /></div>
+      <h2>Thumbnails: 0 / 3 / 6 / 10 items</h2>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap">
+        {[0, 3, 6, 10].map((n) => <div style="width:180px"><StarWheel items={demo(n)} decorative size="100%" /></div>)}
+      </div>
+    </main>
+  </body>
+</html>

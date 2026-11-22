@@ -1,0 +1,49 @@
+---
+import Base from '../../layouts/Base.astro';
+import FaceArt from '../../components/FaceArt.astro';
+import PathChip from '../../components/PathChip.astro';
+import { t, type Lang } from '../../i18n';
+import { langStaticPaths } from '../../lib/paths';
+import { about } from '../../data/about';
+export const getStaticPaths = langStaticPaths;
+const lang = Astro.params.lang as Lang;
+const d = about[lang];
+---
+<Base lang={lang} title={t(lang, 'meta.about.title')} description={t(lang, 'meta.about.description')} path="about" wide>
+  <div class="about">
+    <div class="about__text">
+      <PathChip path="about" />
+      <h1 class="reveal" style="--i:0">{t(lang, 'about.heading')}</h1>
+      {d.sections.map((s, n) => (
+        <section class="reveal" style="--i:2">
+          {n > 0 && <h2>{s.title}</h2>}
+          {s.paras?.map((p) => <p>{p}</p>)}
+          {s.items && <ul>{s.items.map((i) => <li>{i}</li>)}</ul>}
+        </section>
+      ))}
+    </div>
+    <div class="about__art" data-focus data-parallax>
+      <FaceArt />
+    </div>
+  </div>
+</Base>
+
+<style>
+  .about { display: grid; gap: 2rem 4rem; align-items: start; padding-block: var(--page-top) .5rem; }
+  .about__text { position: relative; z-index: 2; }
+  .about__art { position: relative; width: min(100%, 420px, calc((100dvh - 345px) * .7)); min-width: 260px; justify-self: center; }
+  .about__rings { position: absolute; inset: 6% -6% 2% -6%; border: var(--stroke) solid var(--brown); border-radius: 50%; opacity: .25; }
+  .about section { margin-top: 2.6rem; }
+  .about section:first-of-type > p { text-indent: 2.5rem; }
+  .about section h2 { margin: 0 0 1rem; }
+  .about h3 { margin: 0 0 .4rem; font-size: 1rem; }
+  .about ul { margin: 0; padding-left: 1.2rem; }
+  .about li { margin-bottom: .45rem; }
+  .cols { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  .cols p { margin: 0; }
+  .about__star { margin-top: 1.2rem; opacity: .75; }
+  @media (min-width: 900px) {
+    .about { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+    .about__art { position: sticky; top: 6rem; }
+  }
+</style>

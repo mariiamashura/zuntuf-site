@@ -1,0 +1,25 @@
+{
+  "name": "zuntuf-site",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "author": "Mariia Mashura",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.6",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "astro": "^7.4.13",
+    "typescript": "^7.0.2"
+  },
+  "description": "Zuntuf: static multilingual (EN/DE/UA) website of small programs and a game by one independent author.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariiamashura/zuntuf-site.git"
+  },
+  "homepage": "https://github.com/mariiamashura/zuntuf-site#readme"
+}

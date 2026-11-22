@@ -1,0 +1,202 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Lightbox from '../../../components/Lightbox.astro';
+import RingsMark from '../../../components/RingsMark.astro';
+import ToolArt from '../../../components/ToolArt.astro';
+import SvitkoArt from '../../../components/SvitkoArt.astro';
+import { ART } from '../../../lib/art';
+import { t, locales, localePath, type Lang } from '../../../i18n';
+import { getTools, localizeTool } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const tools = await getTools();
+  return locales.flatMap((lang) => tools.map((e) => ({ params: { lang, slug: e.id } })));
+}
+const lang = Astro.params.lang as Lang;
+const slug = Astro.params.slug as string;
+const all = await getTools();
+const entry = all.find((e) => e.id === slug)!;
+const x = localizeTool(entry, lang);
+const related = x.related.map((s) => all.find((e) => e.id === s)).filter(Boolean).map((e) => localizeTool(e!, lang));
+const dl = x.platforms.filter((p) => p.downloadUrl);
+const bullets = x.copy.features.slice(0, 3);
+const hasArt = !!(x.art && (ART[x.art] || x.art === 'svitko'));
+const osList = x.platforms.map((p) => t(lang, `os.${p.os}`)).join(', ');
+---
+<Base lang={lang} title={`${x.name} — Zuntuf`} description={x.copy.tagline ?? t(lang, 'meta.home.description')} path={`tools/${slug}`} wide keywords={x.name} jsonLd={{ '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: x.name, description: x.copy.description ?? x.copy.tagline, applicationCategory: x.category === 'files' ? 'UtilitiesApplication' : x.category === 'photography' ? 'MultimediaApplication' : 'GameApplication', operatingSystem: x.platforms.map((p) => p.os).join(', ') || undefined, softwareVersion: x.version, url: Astro.site!.origin + localePath(lang, `tools/${slug}`), author: { '@type': 'Person', name: 'Mariia Mashura' } }}>
+  <article class={`poster${x.panels ? '' : ' poster--clean'}`} data-slug={slug} data-accent={x.accent}>
+    <div class="poster__text">
+      <a class="back reveal" style="--i:0" href={localePath(lang)} data-rebuild>
+        <svg viewBox="0 0 28 28" width="26" height="26" aria-hidden="true"><path d="M20 4 6 14l14 10Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/></svg>
+        <span>{t(lang, 'nav.back')}</span>
+      </a>
+      <h1 class="reveal" style="--i:1">{x.name}</h1>
+      {x.copy.tagline && <p class="poster__lead reveal" style="--i:2">{x.copy.tagline}</p>}
+      {x.copy.description && <p class="reveal indent" style="--i:3">{x.copy.description}</p>}
+      {!x.copy.tagline && !x.copy.description && <p class="poster__lead reveal" style="--i:2">{t(lang, 'tool.pending')}</p>}
+      {x.featuresPage && <p class="reveal" style="--i:3"><a class="more" href={localePath(lang, `tools/${slug}/features`)}>{t(lang, 'tool.allFeatures')} →</a></p>}
+      {x.copy.usedFallback && <p class="reveal" style="--i:3"><small>{t(lang, 'fallbackNotice')}</small></p>}
+      {bullets.length > 0 && (
+        <ul class="bullets reveal" style="--i:4">
+          {bullets.map((f: string) => <li>{f}</li>)}
+        </ul>
+      )}
+      <p class="poster__meta reveal" style="--i:5">
+        {x.status && <span>{t(lang, `status.${x.status}`)}</span>}
+        {x.version && <span>{t(lang, 'tool.version')} {x.version}</span>}
+        {osList && <span>{osList}</span>}
+      </p>
+    </div>
+
+    <div class="poster__art" aria-hidden="true" data-parallax data-focus>
+      <div class="panel panel--b reveal" style="--i:2" data-depth="0.7" aria-hidden="true"></div>
+      <div class="panel panel--c reveal" style="--i:3" data-depth="0.4" aria-hidden="true"></div>
+      <div class="panel panel--main" data-flip="panel" data-depth="0.15" aria-hidden="true"></div>
+      {hasArt ? <div class="poster__tart" style={x.artSize ? `--ta-w:${x.artSize}%` : undefined}>{x.art === 'svitko' ? <SvitkoArt /> : <ToolArt slug={slug} art={x.art!} />}</div> : <RingsMark class="poster__rings" orbit />}
+    </div>
+
+    <div class="poster__dl reveal" style="--i:6">
+      {dl.length > 0 ? dl.map((p) => (
+        <a class="dl" href={p.downloadUrl} rel="noopener">
+          <svg class="dl__arrow" viewBox="0 0 120 100" aria-hidden="true"><polygon points="2,34 62,34 62,4 118,50 62,96 62,66 2,66" /></svg>
+          <span class="dl__box">{t(lang, 'tool.downloadFor', { os: t(lang, `os.${p.os}`) })}{p.size ? ` · ${p.size}` : ''}</span>
+        </a>
+      )) : x.homepage ? (
+        <a class="dl" href={x.homepage} rel="noopener">
+          <svg class="dl__arrow" viewBox="0 0 120 100" aria-hidden="true"><polygon points="2,34 62,34 62,4 118,50 62,96 62,66 2,66" /></svg>
+          <span class="dl__box">{t(lang, 'tool.website')}</span>
+        </a>
+      ) : x.status === 'coming-soon' ? (
+        <span class="dl dl--off"><span class="dl__box">{t(lang, 'tool.comingSoon')}</span></span>
+      ) : null}
+    </div>
+  </article>
+
+  <div class="details">
+    <dl class="facts">
+      {x.status && <><dt>{t(lang, 'tool.status')}</dt><dd>{t(lang, `status.${x.status}`)}</dd></>}
+      {x.category && <><dt>{t(lang, 'tool.category')}</dt><dd>{t(lang, `category.${x.category}`)}</dd></>}
+      {x.version && <><dt>{t(lang, 'tool.version')}</dt><dd>{x.version}</dd></>}
+      {x.platforms.length > 0 && <><dt>{t(lang, 'tool.platforms')}</dt><dd>{osList}</dd></>}
+      {x.languages.length > 0 && <><dt>{t(lang, 'tool.languages')}</dt><dd>{x.languages.join(', ').toUpperCase()}</dd></>}
+    </dl>
+
+    {x.copy.features.length > 3 && (<section><h2>{t(lang, 'tool.features')}</h2><ul class="bullets">{x.copy.features.map((f: string) => <li>{f}</li>)}</ul></section>)}
+    {x.copy.requirements.length > 0 && (<section><h2>{t(lang, 'tool.requirements')}</h2><ul class="bullets">{x.copy.requirements.map((f: string) => <li>{f}</li>)}</ul></section>)}
+
+    {x.screenshots.length > 0 && (
+      <section><h2>{t(lang, 'tool.screenshots')}</h2>
+        <div class="gallery">{x.screenshots.map((s) => <img src={s.src} alt={(s.alt as any)[lang] ?? s.alt.en} loading="lazy" data-zoom />)}</div>
+      </section>
+    )}
+
+    {x.changelog.length > 0 && (
+      <section><h2>{t(lang, 'tool.changelog')}</h2>
+        {x.changelog.map((c) => (<><h3>{c.version} <small>{c.date}</small></h3><ul>{((c.notes as any)[lang] ?? c.notes.en).map((n: string) => <li>{n}</li>)}</ul></>))}
+      </section>
+    )}
+
+    {x.copy.faq.length > 0 && (
+      <section><h2>{t(lang, 'tool.faq')}</h2>
+        {x.copy.faq.map((f: { q: string; a: string }) => <details><summary>{f.q}</summary><p class="indent">{f.a}</p></details>)}
+      </section>
+    )}
+
+    {x.copy.privacy && (<section><h2>{t(lang, 'tool.privacy')}</h2><p class="indent">{x.copy.privacy}</p></section>)}
+
+    {(x.homepage || x.docs || x.repo) && (
+      <p class="links">
+        {x.homepage && <a href={x.homepage} rel="noopener">{t(lang, 'tool.website')}</a>}
+        {x.docs && <a href={x.docs} rel="noopener">{t(lang, 'tool.docs')}</a>}
+        {x.repo && <a href={x.repo} rel="noopener">{t(lang, 'tool.source')}</a>}
+      </p>
+    )}
+
+    {related.length > 0 && (<section><h2>{t(lang, 'tool.related')}</h2><ul>{related.map((r) => <li><a href={localePath(lang, `tools/${r.slug}`)}>{r.name}</a></li>)}</ul></section>)}
+  </div>
+  <Lightbox label={t(lang, 'nav.close')} />
+</Base>
+
+<script>
+  import '../../../scripts/orbit';
+  import { initPoster } from '../../../scripts/poster';
+  const el = document.querySelector<HTMLElement>('.poster');
+  if (el) initPoster(el);
+</script>
+
+<style>
+  .poster { --main: var(--mustard); --b: var(--coral); --c: var(--ochre);
+    display: grid; grid-template-columns: 1fr; grid-template-areas: 'text' 'art' 'dl'; gap: 1.5rem 3rem; padding-block: var(--page-top) 2rem; }
+  .poster[data-accent='coral'] { --main: var(--coral); --b: var(--mustard); --c: var(--ochre); }
+  .poster[data-accent='ochre'] { --main: var(--ochre); --b: var(--mustard); --c: var(--coral); }
+  .poster[data-accent='cream'] { --main: var(--cream); --b: var(--mustard); --c: var(--coral); }
+
+  .poster__text { grid-area: text; }
+  .poster__art { grid-area: art; position: relative; aspect-ratio: 1.15; width: 100%; max-width: 620px; justify-self: center; }
+  .poster__dl { grid-area: dl; display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
+
+  .back { display: inline-flex; align-items: center; gap: .4rem; text-decoration: none; min-height: 26px; padding-block: 9px; margin-block: -9px calc(1rem - 9px); } /* 26px tall in the layout like the path chip on other pages, 44px to tap */
+  .back:hover svg { transform: translateX(-4px); }
+  .back svg { transition: transform .18s ease; }
+  .poster h1 { font-size: clamp(2.2rem, 4.6vw, 4.1rem); line-height: 1; /* one size for every project, small enough that a long name stays on one line */ margin-bottom: .3em; overflow-wrap: break-word; }
+  .poster__lead { font-size: 1.25rem; }
+  .poster__meta { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; font-size: .9rem; margin-top: 1.2rem; }
+
+  .bullets { list-style: none; padding: 0; margin: 1.2rem 0; display: grid; gap: .6rem; }
+  .bullets li { padding-left: 2rem; position: relative; }
+  .bullets li::before { content: ''; position: absolute; left: 0; top: .35em; width: 1rem; height: 1rem; background: var(--coral); border: 3px solid var(--brown); clip-path: polygon(0 0, 100% 50%, 0 100%); }
+
+  .panel { position: absolute; border: var(--stroke) solid color-mix(in srgb, var(--brown) 18%, transparent); }
+  /* see-through sheets: tinted, so what lies behind and the art in front stay visible */
+  .panel--b { inset: 10% 8% 30% 28%; background: color-mix(in srgb, var(--b) 18%, transparent); rotate: 7deg; }
+  .panel--c { inset: 14% 20% 20% 12%; background: color-mix(in srgb, var(--c) 18%, transparent); rotate: -9deg; }
+  .panel--main { inset: 18% 16% 24% 18%; background: color-mix(in srgb, var(--main) 18%, transparent); rotate: -3deg; }
+  .shot { position: absolute; inset: 24% 16% 30% 20%; margin: 0; background: var(--cream); border: var(--stroke) solid var(--brown); overflow: hidden; }
+  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+  .poster__tart { position: absolute; left: -3%; bottom: -8%; width: var(--ta-w, 66%); z-index: 2; }
+  /* no big sheets behind: the character stands on its own, centred in its column */
+  .poster--clean .panel { display: none; }
+  /* a slow, uneven pulse: each sheet breathes on its own clock */
+  @media (prefers-reduced-motion: no-preference) {
+    /* size and brightness breathe on separate, unrelated clocks for each sheet, so they never fall into step */
+    .panel--b { animation: panel-size 62s ease-in-out infinite, panel-glow 44s ease-in-out -17s infinite; }
+    .panel--c { animation: panel-size 88s ease-in-out -35s infinite, panel-glow 56s ease-in-out -6s infinite; }
+    .panel--main { animation: panel-size 70s ease-in-out -52s infinite, panel-glow 80s ease-in-out -45s infinite; }
+  }
+  @keyframes panel-size { 0%, 100% { scale: .998; } 50% { scale: 1.003; } }
+  @keyframes panel-glow { 0%, 100% { opacity: .98; } 50% { opacity: 1; } }
+  .poster--clean .poster__tart { left: calc((100% - var(--ta-w, 56%)) / 2); bottom: 1%; width: var(--ta-w, 56%); }
+  .poster :global(.poster__rings) { position: absolute; left: -2%; bottom: 4%; width: 34%; height: auto; }
+
+  .dl { display: inline-flex; align-items: stretch; text-decoration: none; color: var(--brown); }
+  .dl__arrow { width: clamp(70px, 9vw, 110px); height: auto; flex: none; margin-right: -4px; transition: transform .2s ease; }
+  .dl__arrow polygon { fill: var(--coral); stroke: var(--brown); stroke-width: 5; stroke-linejoin: miter; }
+  .dl__box { display: flex; align-items: center; background: var(--mustard); border: var(--stroke) solid var(--brown); padding: .9rem 1.6rem; font-size: clamp(1.3rem, 2.6vw, 2.1rem); line-height: 1.1; transition: transform .2s ease, background-color .2s ease; }
+  a.dl:hover .dl__arrow { transform: translateX(8px); }
+  a.dl:hover .dl__box { background: var(--coral); color: var(--char); }
+  .dl--off .dl__box { background: var(--cream); }
+
+  @media (min-width: 900px) {
+    .poster { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); grid-template-areas: 'text art' 'dl dl'; align-items: start; }
+    .poster__dl { justify-self: end; }
+    .poster__dl { grid-column: 2; }
+  }
+
+  .details { width: min(900px, 100%); margin-inline: auto; padding-block: 2rem 3rem; border-top: var(--stroke) solid var(--brown); }
+  .facts { display: grid; grid-template-columns: max-content 1fr; gap: .3rem 1.5rem; }
+  .facts dt { font-weight: 500; } .facts dd { margin: 0; }
+  .details section { margin-top: 2.8rem; }
+  .details section h2 { margin-top: 0; margin-bottom: 1rem; }
+  .gallery { display: grid; gap: 1.6rem; }
+  .gallery img { border: var(--stroke) solid var(--brown); cursor: zoom-in; }
+  .links { display: flex; flex-wrap: wrap; gap: 1.2rem; }
+  details { border: var(--stroke) solid var(--brown); padding: .6rem 1rem; margin-bottom: .5rem; }
+  summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; align-items: center; }
+
+  .poster.is-leaving .reveal, .poster.is-leaving .panel, .poster.is-leaving :global(.poster__rings) { opacity: 0; transform: translateY(10px); transition: opacity .2s ease, transform .2s ease; }
+
+  /* gentle arrival; the ray-to-panel handoff is done in scripts/poster.ts */
+  @media (prefers-reduced-motion: no-preference) {
+    .poster .reveal { animation-duration: .55s; }
+  }
+</style>

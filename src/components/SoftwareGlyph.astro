@@ -1,0 +1,110 @@
+---
+// Flat, constructivist "this is software" glyphs: an app window, a cursor, a terminal, a folder, sliders, a progress bar.
+// Same palette as the rest of the site; the outlines are the same variable-width ink as the star, only finer:
+// every edge swells and thins along its length. Purely decorative.
+import { inkOutline } from '../lib/wheel';
+interface Props { kind: 'window' | 'cursor' | 'terminal' | 'folder' | 'sliders' | 'progress' | 'star' | 'smile' | 'sun' | 'dice' | 'bolt'; class?: string }
+const { kind, class: cls = '' } = Astro.props;
+
+type Pt = [number, number];
+const BR = '#512B19', CR = '#F5EED8', MU = '#E8AA20', CO = '#F05249', OC = '#96601F', CH = '#28221D';
+const rect = (x1: number, y1: number, x2: number, y2: number): Pt[] => [[x1, y1], [x2, y1], [x2, y2], [x1, y2]];
+type Shape = { t: 'poly'; pts: Pt[]; fill: string; ink?: boolean; g?: string } | { t: 'circle'; cx: number; cy: number; r: number; fill: string; g?: string };
+
+// sun: eight pointed rays around a round face
+const ray = (a: number): Pt[] => {
+  const t = (a * Math.PI) / 180, w = 0.2;
+  const P = (r: number, d: number): Pt => [50 + Math.cos(t + d) * r, 50 + Math.sin(t + d) * r];
+  return [P(46, 0), P(28, w), P(28, -w)].map(([x, y]) => [Math.round(x * 10) / 10, Math.round(y * 10) / 10] as Pt);
+};
+const shapes: Record<string, Shape[]> = {
+  bolt: [{ t: 'poly', pts: [[60, 4], [20, 56], [46, 56], [36, 96], [82, 38], [56, 38]], fill: MU }],
+  dice: [
+    { t: 'poly', pts: rect(10, 10, 90, 90), fill: CR },
+    ...[[30, 30], [70, 30], [50, 50], [30, 70], [70, 70]].map(([cx, cy]) => ({ t: 'circle' as const, cx, cy, r: 7, fill: CO })),
+  ],
+  sun: [
+    ...Array.from({ length: 8 }, (_, k) => ({ t: 'poly' as const, pts: ray(k * 45), fill: MU })),
+    { t: 'circle', cx: 50, cy: 50, r: 22, fill: '#F5C42A' },
+  ],
+  star: [{ t: 'poly', pts: [[50, 6], [61, 36], [94, 38], [68, 58], [77, 92], [50, 73], [23, 92], [32, 58], [6, 38], [39, 36]], fill: CO }],
+  smile: [
+    { t: 'circle', cx: 50, cy: 50, r: 40, fill: MU },
+    { t: 'poly', pts: rect(34, 34, 44, 46), fill: BR, ink: false }, { t: 'poly', pts: rect(56, 34, 66, 46), fill: BR, ink: false },
+    { t: 'poly', pts: rect(28, 58, 38, 66), fill: BR, ink: false }, { t: 'poly', pts: rect(38, 66, 62, 74), fill: BR, ink: false }, { t: 'poly', pts: rect(62, 58, 72, 66), fill: BR, ink: false },
+  ],
+  window: [
+    { t: 'poly', pts: rect(5, 5, 115, 95), fill: CR },
+    { t: 'poly', pts: rect(5, 5, 115, 29), fill: MU },
+    { t: 'circle', cx: 19, cy: 17, r: 4.5, fill: CO }, { t: 'circle', cx: 33, cy: 17, r: 4.5, fill: CR }, { t: 'circle', cx: 47, cy: 17, r: 4.5, fill: BR },
+    { t: 'poly', pts: rect(17, 42, 75, 51), fill: OC }, { t: 'poly', pts: rect(17, 59, 103, 68), fill: CO }, { t: 'poly', pts: rect(17, 76, 57, 85), fill: MU },
+  ],
+  cursor: [{ t: 'poly', pts: [[14, 6], [14, 80], [33, 62], [47, 94], [61, 88], [47, 58], [74, 58]], fill: CO }],
+  terminal: [
+    { t: 'poly', pts: rect(5, 12, 115, 88), fill: CH },
+    { t: 'poly', pts: rect(5, 12, 115, 26), fill: BR },
+    { t: 'poly', pts: rect(52, 62, 82, 70), fill: CR, ink: false },
+  ],
+  folder: [
+    { t: 'poly', pts: [[6, 20], [44, 20], [54, 32], [114, 32], [114, 90], [6, 90]], fill: OC },
+    { t: 'poly', pts: rect(6, 44, 114, 90), fill: MU },
+  ],
+  sliders: [
+    { t: 'poly', pts: rect(6, 22, 114, 36), fill: CR }, { t: 'circle', cx: 42, cy: 29, r: 12, fill: CO, g: 'k1' },
+    { t: 'poly', pts: rect(6, 62, 114, 76), fill: CR }, { t: 'circle', cx: 84, cy: 69, r: 12, fill: MU, g: 'k2' },
+  ],
+  progress: [
+    { t: 'poly', pts: rect(6, 30, 114, 70), fill: CR },
+    { t: 'poly', pts: rect(6, 30, 114, 70), fill: MU, g: 'pf' },
+    { t: 'poly', pts: rect(22, 30, 30, 70), fill: BR, ink: false, g: 'pf' }, { t: 'poly', pts: rect(42, 30, 50, 70), fill: BR, ink: false, g: 'pf' }, { t: 'poly', pts: rect(62, 30, 70, 70), fill: BR, ink: false, g: 'pf' },
+  ],
+};
+const list = shapes[kind];
+const seedBase = kind.length * 7;
+const pts = (p: Pt[]) => p.map((q) => q.join(',')).join(' ');
+---
+<svg class={`glyph glyph--${kind} ${cls}`} viewBox="0 0 120 100" aria-hidden="true" focusable="false">
+  {kind === 'progress' && <clipPath id="pg-clip"><rect class="pg-clip" x="6" y="28" width="108" height="44" /></clipPath>}
+  <g class="gall">
+  {list.map((sh, i) => sh.t === 'poly' ? (
+    <g class={sh.g} clip-path={sh.g === 'pf' ? 'url(#pg-clip)' : undefined}>
+      {sh.ink !== false && <polygon points={inkOutline(sh.pts, seedBase + i, 0.45, 1.7)} fill={BR} />}
+      <polygon points={pts(sh.pts)} fill={sh.fill} />
+    </g>
+  ) : (
+    <g class={sh.g} clip-path={sh.g === 'pf' ? 'url(#pg-clip)' : undefined}>
+      <circle cx={sh.cx + Math.cos(i * 2.1) * 0.5} cy={sh.cy + Math.sin(i * 2.1) * 0.5} r={sh.r + 1.1} fill={BR} />
+      <circle cx={sh.cx} cy={sh.cy} r={sh.r} fill={sh.fill} />
+    </g>
+  ))}
+  </g>
+  {kind === 'terminal' && <text x="16" y="72" font-size="40" font-weight="500" font-family="IBM Plex Mono, monospace" fill={MU}>&gt;</text>}
+</svg>
+
+<style is:global>
+  .glyph { display: block; overflow: visible; }
+  /* each glyph has its own small motion (whole-glyph ones on .gall, parts on named groups) */
+  .gall, .glyph .k1, .glyph .k2 { transform-box: view-box; }
+  .pg-clip { transform-box: fill-box; transform-origin: 0 50%; }
+  .glyph .gall { transform-origin: 41.7% 50%; }
+  @media (prefers-reduced-motion: no-preference) {
+    .glyph--folder .gall { transform-origin: 50% 92%; animation: gl-rock 5.6s ease-in-out infinite; }
+    .glyph--sun .gall { animation: gl-turn 48s linear infinite; }
+    .glyph--star .gall { animation: gl-pulse 3.6s ease-in-out infinite; }
+    .glyph--smile .gall { animation: gl-sway 4.8s ease-in-out infinite; }
+    .glyph--bolt .gall { transform-origin: 42.5% 50%; animation: gl-stretch 3.2s ease-in-out infinite; }
+    .glyph--dice .gall { transform-origin: 41.7% 90%; animation: gl-roll 4.4s ease-in-out infinite; }
+    .glyph--sliders .k1 { animation: gl-k1 5.2s ease-in-out infinite; }
+    .glyph--sliders .k2 { animation: gl-k2 6.4s ease-in-out infinite; }
+    .glyph--progress .pg-clip { animation: gl-fill 6s ease-in-out infinite; }
+  }
+  @keyframes gl-rock { 0%, 100% { rotate: -4deg; } 50% { rotate: 4deg; } }
+  @keyframes gl-turn { to { rotate: 360deg; } }
+  @keyframes gl-pulse { 0%, 100% { scale: .9; } 50% { scale: 1.14; } }
+  @keyframes gl-sway { 0%, 100% { rotate: -9deg; } 50% { rotate: 9deg; } }
+  @keyframes gl-stretch { 0%, 100% { scale: 1 .88; } 50% { scale: 1 1.12; } }
+  @keyframes gl-roll { 0%, 100% { rotate: -13deg; translate: -5px 0; } 50% { rotate: 13deg; translate: 5px 0; } }
+  @keyframes gl-k1 { 0%, 100% { translate: -22px 0; } 50% { translate: 52px 0; } }
+  @keyframes gl-k2 { 0%, 100% { translate: 22px 0; } 50% { translate: -52px 0; } }
+  @keyframes gl-fill { 0%, 100% { scale: 0 1; } 50% { scale: 1 1; } }
+</style>

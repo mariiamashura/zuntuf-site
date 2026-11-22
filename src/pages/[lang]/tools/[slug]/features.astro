@@ -1,0 +1,63 @@
+---
+// Detailed "all features" page of a tool (only tools with featuresPage: true). The text lives in src/data/<slug>-features.ts.
+import Base from '../../../../layouts/Base.astro';
+import Lightbox from '../../../../components/Lightbox.astro';
+import PathChip from '../../../../components/PathChip.astro';
+import { t, locales, localePath, type Lang } from '../../../../i18n';
+import { getTools, localizeTool } from '../../../../lib/content';
+import * as bowerfs from '../../../../data/bowerfs-features';
+const DATA: Record<string, { intro: any; sections: any[] }> = { bowerfs };
+
+export async function getStaticPaths() {
+  const tools = (await getTools()).filter((e) => e.data.featuresPage);
+  return locales.flatMap((lang) => tools.map((e) => ({ params: { lang, slug: e.id } })));
+}
+const lang = Astro.params.lang as Lang;
+const slug = Astro.params.slug as string;
+const entry = (await getTools()).find((e) => e.id === slug)!;
+const x = localizeTool(entry, lang);
+const data = DATA[slug];
+const L = (o: any) => o[lang] ?? o.en;
+---
+<Base lang={lang} title={`${t(lang, 'tool.featuresTitle')} — ${x.name} — Zuntuf`} description={L(data.intro)} path={`tools/${slug}/features`} wide>
+  <article class="feat">
+    <a class="back" href={localePath(lang, `tools/${slug}`)}>
+      <svg viewBox="0 0 28 28" width="26" height="26" aria-hidden="true"><path d="M20 4 6 14l14 10Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter"/></svg>
+      <span>{x.name}</span>
+    </a>
+    <h1 class="reveal" style="--i:0">{x.name}: {t(lang, 'tool.featuresTitle').toLowerCase()}</h1>
+    <p class="feat__intro reveal indent" style="--i:1">{L(data.intro)}</p>
+
+    <nav class="feat__toc" aria-label={t(lang, 'tool.featuresTitle')}>
+      {data.sections.map((s) => <a href={`#${s.id}`}>{L(s.title)}</a>)}
+    </nav>
+
+    {data.sections.map((s) => (
+      <section id={s.id}>
+        <h2>{L(s.title)}</h2>
+        <ul class="bullets">{L(s.items).map((i: string) => <li>{i}</li>)}</ul>
+        {s.shots && (
+          <div class="shots">{s.shots.map((p: any) => <img src={p.src} alt={L(p.alt)} loading="lazy" data-zoom />)}</div>
+        )}
+      </section>
+    ))}
+  </article>
+  <Lightbox label={t(lang, 'nav.close')} />
+</Base>
+
+<style>
+  .feat { width: min(900px, 100%); margin-inline: auto; padding-block: var(--page-top) 3rem; }
+  .back { display: inline-flex; align-items: center; gap: .4rem; text-decoration: none; min-height: 26px; padding-block: 9px; margin-block: -9px calc(1rem - 9px); }
+  .back:hover svg { transform: translateX(-4px); }
+  .back svg { transition: transform .18s ease; }
+  .feat h1 { font-size: clamp(2rem, 4.4vw, 3.4rem); line-height: 1.05; margin-bottom: .4em; overflow-wrap: break-word; }
+  .feat__intro { font-size: 1.1rem; }
+  .feat__toc { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; margin: 1.6rem 0 0; font-size: .95rem; }
+  .feat section { margin-top: 3rem; scroll-margin-top: 5rem; }
+  .feat h2 { margin: 0 0 1rem; }
+  .bullets { list-style: none; padding: 0; margin: 0; display: grid; gap: .7rem; }
+  .bullets li { padding-left: 2rem; position: relative; }
+  .bullets li::before { content: ''; position: absolute; left: 0; top: .35em; width: 1rem; height: 1rem; background: var(--coral); border: 3px solid var(--brown); clip-path: polygon(0 0, 100% 50%, 0 100%); }
+  .shots { display: grid; gap: 1.6rem; margin-top: 1.6rem; }
+  .shots img { width: 100%; height: auto; border: var(--stroke) solid var(--brown); cursor: zoom-in; }
+</style>

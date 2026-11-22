@@ -1,0 +1,124 @@
+---
+// Svitko, restyled: the blocky little wizard rebuilt from flat constructivist pieces in the site palette,
+// with the same swelling-and-thinning ink as the rest of the site. Eyes follow the pointer, the lantern glows,
+// the hat's curl sways; hover lifts the hat, a click blinks. Purely vector, no image file.
+import { inkOutline } from '../lib/wheel';
+type Pt = [number, number];
+const rect = (x1: number, y1: number, x2: number, y2: number): Pt[] => [[x1, y1], [x2, y1], [x2, y2], [x1, y2]];
+const BR = '#512B19', CR = '#F5EED8', MU = '#E8AA20', YE = '#F5C42A', CO = '#F05249', OC = '#96601F';
+
+// hat: stepped layers, widening downward (like the pixel hat), alternating two yellows
+const rows: [number, number, number, string][] = [
+  [26, 178, 272, YE], [52, 142, 304, MU], [78, 112, 326, YE], [104, 86, 342, MU], [130, 62, 356, YE], [156, 40, 372, MU],
+];
+const hat: { pts: Pt[]; fill: string }[] = rows.map(([y, a, b, f]) => ({ pts: rect(a, y, b, y + 28), fill: f }));
+const brim = rect(22, 184, 388, 218);
+// the curl at the top right, climbing in steps
+const curl: Pt[][] = [rect(262, 8, 304, 34), rect(298, 0, 346, 24), rect(336, 14, 372, 48), rect(354, 42, 384, 86), rect(348, 80, 376, 122)];
+const head = rect(26, 216, 382, 398);
+const side = rect(326, 216, 382, 398); // shaded side of the block
+const neck = rect(92, 398, 292, 474);
+// many small, see-through sheets of different sizes around him: they sway as if in a wind and slowly breathe
+const SHEETS = [
+  { x: -6, y: 4, w: 9, c: '232,170,32', o: .42, sway: 7.5, breathe: 5.2, rot: 12, dx: 3 },
+  { x: 8, y: -8, w: 6, c: '245,238,216', o: .55, sway: 5.4, breathe: 4.4, rot: -16, dx: 2.5 },
+  { x: 28, y: -12, w: 8, c: '240,82,73', o: .38, sway: 6.6, breathe: 5.8, rot: 14, dx: -3 },
+  { x: 52, y: -9, w: 5.5, c: '232,170,32', o: .5, sway: 5.1, breathe: 4.1, rot: -12, dx: 3.5 },
+  { x: 76, y: -4, w: 9, c: '245,238,216', o: .5, sway: 8.2, breathe: 6.4, rot: 10, dx: -3 },
+  { x: 91, y: 12, w: 6.5, c: '240,82,73', o: .42, sway: 5.9, breathe: 4.8, rot: -14, dx: -2.5 },
+  { x: 94, y: 34, w: 8.5, c: '150,96,31', o: .36, sway: 7.1, breathe: 5.6, rot: 11, dx: 3 },
+  { x: 89, y: 56, w: 5.5, c: '232,170,32', o: .5, sway: 5.6, breathe: 4.2, rot: -15, dx: -3.5 },
+  { x: 92, y: 78, w: 7.5, c: '245,238,216', o: .48, sway: 6.8, breathe: 5.3, rot: 9, dx: 2.5 },
+  { x: 72, y: 90, w: 6, c: '240,82,73', o: .4, sway: 5.3, breathe: 4.6, rot: -13, dx: -3 },
+  { x: 48, y: 95, w: 8, c: '150,96,31', o: .34, sway: 7.6, breathe: 6.1, rot: 12, dx: 3 },
+  { x: 24, y: 93, w: 5.5, c: '232,170,32', o: .46, sway: 5.5, breathe: 4.3, rot: -11, dx: -2.5 },
+  { x: 4, y: 84, w: 8, c: '245,238,216', o: .5, sway: 6.9, breathe: 5.7, rot: 14, dx: 3.5 },
+  { x: -7, y: 62, w: 6, c: '240,82,73', o: .4, sway: 5.2, breathe: 4.5, rot: -12, dx: 3 },
+  { x: -9, y: 40, w: 8.5, c: '232,170,32', o: .38, sway: 7.3, breathe: 5.9, rot: 10, dx: -3 },
+  { x: -4, y: 22, w: 5, c: '245,238,216', o: .55, sway: 5.0, breathe: 4.0, rot: -17, dx: 2.5 },
+];
+const pts = (p: Pt[]) => p.map((q) => q.join(',')).join(' ');
+let n = 0;
+const ink = (p: Pt[]) => inkOutline(p, 11 + n++, 1.1, 4.4);
+---
+<div class="sv">
+  {SHEETS.map((h, i) => (
+    <span class="sv__sheet" style={`left:${h.x}%;top:${h.y}%;width:${h.w}%;--c:${h.c};--o:${h.o};--sway:${h.sway}s;--breathe:${h.breathe}s;--rot:${h.rot}deg;--dx:${h.dx}%;--k:${i}`}></span>
+  ))}
+<svg class="svitko" viewBox="-6 -8 412 498" aria-hidden="true" focusable="false" data-svitko>
+  <!-- lantern glow behind everything on the body -->
+  <circle class="svitko__halo" cx="206" cy="428" r="62" fill="#F05249" />
+
+  <g class="svitko__hat">
+    {hat.map((h) => (<><polygon points={ink(h.pts)} fill={BR} /><polygon points={pts(h.pts)} fill={h.fill} /></>))}
+    <g class="svitko__curl">
+      {curl.map((c) => (<><polygon points={ink(c)} fill={BR} /><polygon points={pts(c)} fill={MU} /></>))}
+    </g>
+    <polygon points={ink(brim)} fill={BR} /><polygon points={pts(brim)} fill={OC} />
+  </g>
+
+  <polygon points={ink(head)} fill={BR} /><polygon points={pts(head)} fill={CR} />
+  <polygon points={pts(side)} fill="#EADFC0" />
+  <polygon points={pts(rect(26, 378, 382, 398))} fill={CO} />
+
+  <!-- face -->
+  <polygon points={pts([[150, 246], [214, 236], [214, 252], [150, 262]])} fill={BR} />
+  <polygon points={pts([[252, 236], [320, 246], [320, 262], [252, 252]])} fill={BR} />
+  <g class="svitko__eye" style="--ex:0;--ey:0">
+    <polygon points={pts(rect(158, 272, 208, 322))} fill={CR} stroke={BR} stroke-width="3" />
+    <g class="svitko__pupil"><polygon points={pts(rect(170, 282, 204, 316))} fill={BR} /><polygon points={pts(rect(174, 286, 186, 298))} fill={CR} /></g>
+  </g>
+  <g class="svitko__eye" style="--ex:0;--ey:0">
+    <polygon points={pts(rect(258, 270, 308, 320))} fill={CR} stroke={BR} stroke-width="3" />
+    <g class="svitko__pupil"><polygon points={pts(rect(270, 280, 304, 314))} fill={BR} /><polygon points={pts(rect(274, 284, 286, 296))} fill={CR} /></g>
+  </g>
+  <g class="svitko__mouth">
+    <polygon points={pts(rect(196, 340, 218, 352))} fill={BR} /><polygon points={pts(rect(218, 350, 252, 362))} fill={BR} /><polygon points={pts(rect(252, 340, 274, 352))} fill={BR} />
+  </g>
+
+  <!-- body block and lantern -->
+  <polygon points={ink(neck)} fill={BR} /><polygon points={pts(neck)} fill={MU} />
+  <polygon points={pts(rect(262, 398, 292, 474))} fill={OC} />
+  <g class="svitko__lamp">
+    <polygon points={ink(rect(176, 410, 240, 466))} fill={BR} />
+    <polygon points={pts(rect(176, 410, 240, 466))} fill={CO} />
+    <polygon points={pts(rect(190, 422, 226, 456))} fill={YE} />
+    <polygon class="svitko__core" points={pts(rect(200, 432, 216, 448))} fill={CR} />
+  </g>
+</svg>
+</div>
+
+<style is:global>
+  .sv { position: relative; width: 100%; }
+  .svitko { position: relative; z-index: 1; width: 100%; height: auto; display: block; overflow: visible; }
+  /* wind-blown, see-through sheets: tint + thin uneven outline, swaying (rotate + drift) and breathing (scale) on their own clocks */
+  .sv__sheet { position: absolute; z-index: 0; aspect-ratio: 1; pointer-events: none; background: rgba(var(--c), calc(var(--o) * .55)); border: solid rgba(81, 43, 25, calc(var(--o) + .15)); border-width: 1.5px 3px 2px 1.5px; opacity: var(--o); transform-origin: 50% 0%; }
+  @media (prefers-reduced-motion: no-preference) {
+    .sv__sheet { animation: sheet-sway var(--sway) ease-in-out infinite alternate, sheet-breathe var(--breathe) ease-in-out infinite alternate; animation-delay: calc(var(--k) * -1.7s), calc(var(--k) * -1.1s); }
+  }
+  @keyframes sheet-sway { 0% { rotate: calc(var(--rot) * -1); translate: calc(var(--dx) * -1) 0; } 100% { rotate: var(--rot); translate: var(--dx) -3%; } }
+  @keyframes sheet-breathe { 0% { scale: .9; } 100% { scale: 1.12; } }
+  .svitko__hat, .svitko__curl, .svitko__pupil, .svitko__mouth, .svitko__halo { transform-box: fill-box; }
+  .svitko__hat { transform-origin: 50% 100%; transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
+  .svitko__curl { transform-origin: 0% 100%; }
+  .svitko__pupil { transform: translate(calc(var(--ex, 0) * 1px), calc(var(--ey, 0) * 1px)); transition: transform .12s linear; }
+  .svitko__eye { transform-box: fill-box; transform-origin: center; transition: transform .1s ease; }
+  .svitko__halo { opacity: .35; transform-origin: center; }
+  .svitko__core { transform-box: fill-box; transform-origin: center; }
+  .svitko:hover .svitko__hat { transform: translateY(-14px) rotate(-1.2deg); }
+  .svitko:hover .svitko__halo { opacity: .6; }
+  .svitko.is-blink .svitko__eye { transform: scaleY(.12); }
+  .svitko:hover .svitko__mouth { transform: scaleX(1.12); transform-origin: center; }
+  @media (prefers-reduced-motion: no-preference) {
+    .svitko__curl { animation: curl-sway 5.5s ease-in-out infinite; }
+    .svitko__halo { animation: halo 3.4s ease-in-out infinite; }
+    .svitko__core { animation: core 2.6s ease-in-out infinite; }
+  }
+  @keyframes curl-sway { 0%, 100% { rotate: 0deg; } 50% { rotate: 4.5deg; } }
+  @keyframes halo { 0%, 100% { opacity: .28; scale: .94; } 40% { opacity: .5; scale: 1.06; } 70% { opacity: .36; scale: 1; } }
+  @keyframes core { 0%, 100% { opacity: 1; scale: 1; } 30% { opacity: .78; scale: .9; } 55% { opacity: 1; scale: 1.1; } 80% { opacity: .85; scale: .95; } }
+</style>
+
+<script>
+  import '../scripts/svitko';
+</script>

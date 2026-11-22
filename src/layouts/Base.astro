@@ -1,0 +1,220 @@
+---
+import '../styles/global.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/intro.css';
+import LogoMark from '../components/LogoMark.astro';
+import { site } from '../config/site';
+import { motionCss } from '../config/motion';
+import { locales, langLabels, htmlLang, t, localePath, switchPath, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** path without language prefix, e.g. "about" or "tools/example-tool" ("" = home) */
+  path: string;
+  noindex?: boolean;
+  keywords?: string;
+  /** structured data (schema.org), one object or an array */
+  jsonLd?: object | object[];
+  wide?: boolean;
+}
+const { lang, title, description, path, noindex = false, wide = false, keywords, jsonLd } = Astro.props;
+const kw = [...new Set(`${keywords ? keywords + ', ' : ''}${t(lang, 'meta.keywords')}`.split(', '))].join(', ');
+const ogAlt = t(lang, 'meta.ogAlt');
+const ld = jsonLd ? JSON.stringify(Array.isArray(jsonLd) ? jsonLd : [jsonLd]).replaceAll('<', String.fromCharCode(92) + 'u003c') : '';
+const origin = Astro.site!.origin;
+const urlFor = (l: Lang) => origin + localePath(l, path);
+const canonical = urlFor(lang);
+const here = Astro.url.pathname;
+const social = site.social;
+---
+<!doctype html>
+<html lang={htmlLang(lang)}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#F5EED8" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={kw} />
+    <meta name="author" content="Mariia Mashura" />
+    <meta name="application-name" content={site.name} />
+    {noindex ? <meta name="robots" content="noindex" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
+    <link rel="canonical" href={canonical} />
+    {locales.map((l) => <link rel="alternate" hreflang={htmlLang(l)} href={urlFor(l)} />)}
+    <link rel="alternate" hreflang="x-default" href={urlFor('en')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={langLabels[lang].og} />
+    {locales.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={langLabels[l].og} />)}
+    <meta property="og:image" content={origin + '/og.png'} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={origin + '/og.png'} />
+    <meta name="twitter:image:alt" content={ogAlt} />
+    {ld && <script type="application/ld+json" set:html={ld}></script>}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style set:html={motionCss()}></style>
+    <script is:inline>
+      // Decide before first paint whether the entrance plays (home, desktop; on refresh or a fresh visit, not when arriving from another page of the site).
+      try {
+        var mm = matchMedia, st = sessionStorage;
+        // The intro plays when the page is refreshed or opened from outside the site (typed address, bookmark,
+        // external link). Moving here from another page of the site, or coming back from an app page, skips it.
+        var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+        var navType = nav ? nav.type : 'navigate';
+        var internal = false;
+        try { internal = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) {}
+        var isFresh = !st.getItem('zuntuf-rebuild') && (navType === 'reload' || (navType === 'navigate' && !internal));
+        if (mm('(min-width: 900px) and (hover: hover) and (pointer: fine)').matches && !mm('(prefers-reduced-motion: reduce)').matches
+            && /^\/(en|de|ua)\/$/.test(location.pathname) && (isFresh || /[?&]intro(&|$)/.test(location.search))) {
+          document.documentElement.classList.add('intro-run');
+          // failsafe: never leave the page in the dark intro state
+          if (!/[?&]hold/.test(location.search)) setTimeout(function () { document.documentElement.classList.remove('intro-run'); }, 12000);
+        }
+      } catch (e) {}
+    </script>
+    <script is:inline define:vars={{ lang }}>
+      try { localStorage.setItem('zuntuf-lang', lang); } catch (e) {}
+      try { if (sessionStorage.getItem('zuntuf-rebuild')) document.documentElement.classList.add('rebuild'); } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <slot name="bg" />
+    <canvas class="ripples" aria-hidden="true"></canvas>
+    <a class="skip" href="#main">{t(lang, 'nav.skip')}</a>
+
+    <header class="top wrap">
+      <div class="logo">
+        <a class="logo__mark" href={localePath(lang, 'film')} aria-label={t(lang, 'film.label')}><LogoMark size={44} /></a>
+        <a class="logo__name" href={localePath(lang)} aria-label={`${site.name} — ${t(lang, 'nav.home')}`}>{site.name}</a>
+      </div>
+      <nav class="topnav" aria-label={t(lang, 'nav.mainNav')}>
+        <a class="tile tile--cream ink" href={localePath(lang, 'projects')}>{t(lang, 'nav.projects')}</a>
+        <a class="tile tile--cream ink ink-2" href={localePath(lang, 'about')}>{t(lang, 'nav.about')}</a>
+        <a class="tile tile--cream ink ink-3" href={localePath(lang, 'contact')}>{t(lang, 'nav.contact')}</a>
+        <ul class="langs" aria-label={t(lang, 'nav.language')}>
+          {locales.map((l) => (
+            <li>
+              <a href={switchPath(here, l)} hreflang={htmlLang(l)} lang={htmlLang(l)} aria-current={l === lang ? 'true' : undefined} class={l === lang ? 'ink ink-2' : undefined} title={langLabels[l].native}>{langLabels[l].short}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <button class="menubtn" type="button" aria-expanded="false" aria-controls="menu">
+        <svg viewBox="0 0 26 22" width="24" height="20" aria-hidden="true"><rect x="1" y="1" width="24" height="5" fill="#F05249" stroke="#512B19" stroke-width="2"/><rect x="1" y="8.5" width="24" height="5" fill="#F5EED8" stroke="#512B19" stroke-width="2"/><rect x="1" y="16" width="24" height="5" fill="#96601F" stroke="#512B19" stroke-width="2"/></svg>
+        <span>{t(lang, 'nav.menu')}</span>
+      </button>
+    </header>
+
+    <div class="sheet" id="menu" role="dialog" aria-modal="true" aria-label={t(lang, 'nav.menu')} hidden>
+      <div class="sheet__top">
+        <a class="logo" href={localePath(lang)} aria-label={`${site.name} — ${t(lang, 'nav.home')}`}><LogoMark size={44} /><span>{site.name}</span></a>
+        <button class="sheet__close" type="button">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 4 20 20M20 4 4 20" stroke="#512B19" stroke-width="4" fill="none"/></svg>
+          <span>{t(lang, 'nav.close')}</span>
+        </button>
+      </div>
+      <nav class="sheet__nav" aria-label={t(lang, 'nav.mainNav')}>
+        <a class="stile stile--m" href={localePath(lang, 'about')}>{t(lang, 'nav.about')}</a>
+        <a class="stile stile--c" href={localePath(lang, 'projects')}>{t(lang, 'nav.projects')}</a>
+        <a class="stile stile--o" href={localePath(lang, 'contact')}>{t(lang, 'nav.contact')}</a>
+        <a class="stile stile--w" href={localePath(lang, 'privacy')}>{t(lang, 'nav.privacy')}</a>
+      </nav>
+      <ul class="sheet__langs" aria-label={t(lang, 'nav.language')}>
+        {locales.map((l) => (
+          <li><a href={switchPath(here, l)} hreflang={htmlLang(l)} lang={htmlLang(l)} aria-current={l === lang ? 'true' : undefined}>{langLabels[l].native}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <main id="main" class={wide ? "wrap wrap--wide" : "wrap"}>
+      <slot />
+    </main>
+
+    <footer class="foot wrap">
+      <ul class="foot__tiles">
+        <li class="foot__tile foot__tile--m ink"><a href={localePath(lang, 'privacy')}>{t(lang, 'nav.privacy')}</a></li>
+        <li class="foot__tile foot__tile--c ink ink-2"><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        {social.github && <li class="foot__tile foot__tile--o ink ink-3"><a href={social.github} rel="me noopener">GitHub</a></li>}
+        {social.linkedin && <li class="foot__tile foot__tile--m ink"><a href={social.linkedin} rel="me noopener">LinkedIn</a></li>}
+        {social.itch && <li class="foot__tile foot__tile--c ink ink-2"><a href={social.itch} rel="me noopener">itch.io</a></li>}
+        <li class="foot__tile foot__tile--w ink ink-3">{t(lang, 'footer.rights', { year: site.year })}</li>
+      </ul>
+    </footer>
+      <script>
+      import '../scripts/fx';
+      import '../scripts/parallax';
+      import '../scripts/menu';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.25rem; }
+  .logo a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+  .logo { display: inline-flex; align-items: center; gap: .6rem; font-weight: 500; font-size: 1.2rem; text-decoration: none; min-height: 44px; }
+  .topnav { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+  .topnav .tile { padding: .35em .9em; }
+  .langs { display: flex; gap: .25rem; list-style: none; margin: 0 0 0 .5rem; padding: 0; }
+  .langs a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; font-weight: 500; border: var(--stroke) solid transparent; }
+  .langs a[aria-current='true'] { border-color: var(--brown); background: var(--mustard); }
+  .langs a:hover { background: var(--coral); }
+
+  .foot { padding-block: 1.5rem 5.2rem; border-top: var(--stroke) solid var(--brown); }
+  .foot__tiles { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+  .foot__tile { border: var(--stroke) solid var(--brown); padding: .5em 1em; min-height: 44px; display: flex; align-items: center; }
+  .foot__tile a { text-decoration: none; }
+  .foot__tile a:hover { text-decoration: underline; text-decoration-thickness: var(--stroke); }
+  .foot__tile--m { background: var(--mustard); }
+  .foot__tile--c { background: var(--coral); color: var(--char); }
+  .foot__tile--o { background: var(--ochre); color: var(--cream); }
+  .foot__tile--w { background: var(--cream); }
+  .foot__note { font-size: .85rem; margin: 0; }
+  /* short screens: a compact footer so the whole composition still fits */
+  @media (max-height: 720px) and (min-width: 900px) { .foot { padding-block: .8rem 1.6rem; } .foot__tiles { margin-bottom: 0; } .foot__note { display: none; } .top { padding-block: .6rem; } }
+
+  /* ===== mobile menu (button + full-screen sheet); hidden on the desktop experience ===== */
+  .menubtn { display: none; }
+  .sheet[hidden] { display: none; }
+  .sheet { position: fixed; inset: 0; z-index: 60; background: var(--cream) var(--paper); overflow-y: auto; padding: var(--gutter); display: flex; flex-direction: column; gap: 1.2rem; }
+  .sheet__top { display: flex; align-items: center; justify-content: space-between; }
+  .sheet__close { display: inline-flex; align-items: center; gap: .5rem; min-height: 48px; padding: 0 1rem; font: inherit; font-weight: 500; color: var(--brown); background: var(--cream); border: var(--stroke) solid var(--brown); cursor: pointer; }
+  .sheet__nav { display: grid; gap: .8rem; }
+  .stile { position: relative; display: flex; align-items: center; min-height: 84px; padding: 0 1.4rem; font-size: 1.7rem; font-weight: 500; color: var(--brown); text-decoration: none; border: var(--stroke) solid var(--brown); }
+  .stile::after { content: ''; position: absolute; right: -2px; bottom: -2px; width: 30px; height: 30px; background: var(--cream); border-left: var(--stroke) solid var(--brown); border-top: var(--stroke) solid var(--brown); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+  .stile:active { transform: translate(2px, 2px); }
+  .stile--m { background: var(--mustard); } .stile--c { background: var(--coral); color: var(--char); }
+  .stile--o { background: var(--ochre); color: var(--cream); } .stile--w { background: var(--cream); }
+  .sheet__langs { display: flex; flex-wrap: wrap; gap: .6rem; list-style: none; margin: .4rem 0 0; padding: 0; }
+  .sheet__langs a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.1rem; text-decoration: none; border: var(--stroke) solid var(--brown); background: var(--cream); }
+  .sheet__langs a[aria-current='true'] { background: var(--mustard); font-weight: 500; }
+  html.menu-open { overflow: hidden; }
+  @media (prefers-reduced-motion: no-preference) { .sheet:not([hidden]) { animation: sheet-in .28s cubic-bezier(.2, .8, .25, 1); } }
+  @keyframes sheet-in { from { opacity: 0; transform: translateY(-14px); } }
+
+  /* ===== phones and tablets: capability-based, the opposite of the desktop experience ===== */
+  @media not all and (min-width: 900px) and (hover: hover) and (pointer: fine) {
+    .top { flex-wrap: nowrap; gap: .4rem; padding-block: .7rem; }
+    .logo { font-size: 1.05rem; gap: .45rem; }
+    .topnav { flex-wrap: nowrap; margin-left: auto; gap: 0; }
+    .topnav > a.tile { display: none; }
+    .langs { margin: 0 .35rem 0 0; gap: .1rem; }
+    .langs a { min-width: 40px; }
+    .menubtn { display: inline-flex; align-items: center; gap: .5rem; min-height: 48px; padding: 0 .85rem; font: inherit; font-weight: 500; color: var(--brown); background: var(--mustard); border: var(--stroke) solid var(--brown); cursor: pointer; }
+    .menubtn:active { transform: translate(2px, 2px); }
+    .foot { padding-block: 1.2rem 1.6rem; }
+    .foot__tiles { gap: .5rem; }
+    .foot__tile { flex: 1 1 auto; justify-content: center; text-align: center; }
+    .foot__note { font-size: .8rem; }
+  }
+</style>

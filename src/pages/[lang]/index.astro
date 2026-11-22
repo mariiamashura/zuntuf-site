@@ -1,0 +1,90 @@
+---
+import Base from '../../layouts/Base.astro';
+import StarWheel from '../../components/StarWheel.astro';
+import SoftwareCues from '../../components/SoftwareCues.astro';
+import { site } from '../../config/site';
+import { t, localePath, type Lang } from '../../i18n';
+import { langStaticPaths } from '../../lib/paths';
+import { getTools, getProjects, localizeTool } from '../../lib/content';
+export const getStaticPaths = langStaticPaths;
+const lang = Astro.params.lang as Lang;
+const tools = (await getTools()).map((e) => localizeTool(e, lang));
+const hasProjects = (await getProjects()).length > 0;
+
+// Wheel items come only from real content: the tools (and Projects once there are any). About and Contact live in the top menu.
+const items = [
+  ...tools.map((x) => ({ id: x.slug, href: localePath(lang, `tools/${x.slug}`), label: x.name, description: x.copy.tagline, accent: x.accent })),
+  ...(hasProjects ? [{ id: 'projects', href: localePath(lang, 'projects'), label: t(lang, 'nav.projects'), description: t(lang, 'projects.intro'), accent: 'coral' as const }] : []),
+];
+---
+<Base lang={lang} title={t(lang, 'meta.home.title')} description={t(lang, 'meta.home.description')} path="" wide jsonLd={[{ '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: Astro.site!.origin + '/', inLanguage: ['en', 'de', 'uk'] }, { '@context': 'https://schema.org', '@type': 'Person', name: 'Mariia Mashura', url: Astro.site!.origin + '/', email: site.email, jobTitle: 'Graphic designer, artist', address: { '@type': 'PostalAddress', addressLocality: 'Kyiv', addressCountry: 'UA' }, sameAs: [site.social.github, site.social.linkedin].filter(Boolean) }]}>
+  <Fragment slot="bg">
+    <div class="intro-flood" aria-hidden="true"></div>
+    <p class="intro-skip" aria-hidden="true">{t(lang, 'nav.skipIntro')}</p>
+  </Fragment>
+  <h1 class="sr-only">Zuntuf</h1>
+
+  <!-- Desktop experience: the wheel is the navigation -->
+  <section class="desk" aria-label={t(lang, 'home.toolsHeading')}>
+    <SoftwareCues variant="desk" />
+    <StarWheel items={items} label={t(lang, 'home.toolsHeading')} size="max(240px, min(calc(100dvh - var(--wheel-off, 430px)), 56vw, 980px))" />
+    <p class="desk__sig">{t(lang, 'home.tagline')}</p>
+  </section>
+
+  <!-- Phones and tablets: a small static star, then big colour tiles -->
+  <section class="mob">
+    <div class="mob__wheel" aria-hidden="true"><StarWheel decorative size="min(58vw, 230px)" /></div>
+    <SoftwareCues variant="mob" />
+    <p class="mob__tag">{t(lang, 'home.tagline')}</p>
+    {items.length === 0 ? <p>{t(lang, 'home.empty')}</p> : (
+      <ul class="tiles">
+        {items.map((x, i) => (
+          <li>
+            <a class={`mtile accent-${x.accent}`} href={x.href}><strong>{x.label}</strong><span>{x.description}</span></a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</Base>
+
+<script>
+  import '../../scripts/intro';
+</script>
+
+<style>
+  .desk { display: none; --wheel-off: 430px; position: relative; }
+  @media (max-height: 720px) { .desk { --wheel-off: 300px; } }
+  @media (min-width: 900px) and (hover: hover) and (pointer: fine) {
+    .desk { display: block; }
+    .mob { display: none; }
+  }
+  /* terminal-style line: "> software utilities_" typed out, with a thin blinking cursor */
+  .prompt { text-align: center; margin: 1rem auto 0; font-size: 1rem; font-weight: 500; }
+  .prompt__sym { color: var(--coral); }
+  .prompt__txt { display: inline-block; vertical-align: bottom; overflow: hidden; white-space: nowrap; width: calc(var(--n) * 1ch); }
+  .prompt__cur { display: inline-block; width: 2px; height: 1.1em; margin-left: 3px; vertical-align: text-bottom; background: var(--brown); }
+  @media (prefers-reduced-motion: no-preference) {
+    .prompt__txt { animation: type 1.5s steps(var(--n)) .6s backwards; }
+    .prompt__cur { animation: blink 1.05s steps(1) infinite; }
+  }
+  @keyframes type { from { width: 0; } }
+  @keyframes blink { 50% { opacity: 0; } }
+  html.intro-run .prompt { animation: fade-in .6s ease calc(var(--m-spin-at) + 1.2s) backwards; }
+  .desk__sig { text-align: center; margin: 1.5rem auto 0; max-width: 48ch; font-size: .95rem; hyphens: manual; text-wrap: balance; }
+
+  .mob__wheel { margin: .2rem auto .8rem; }
+  .mob__tag { text-align: center; margin: 0 auto 1.2rem; font-size: 1rem; max-width: 34ch; hyphens: manual; text-wrap: balance; }
+  .tiles { list-style: none; padding: 0; margin: 0 0 .8rem; display: grid; gap: .8rem; }
+  .mtile { position: relative; display: grid; align-content: center; gap: .15em; min-height: 92px; padding: .9rem 1.3rem; border: var(--stroke) solid var(--brown); color: var(--brown); text-decoration: none; }
+  .mtile strong { font-size: 1.7rem; font-weight: 500; line-height: 1.1; overflow-wrap: anywhere; }
+  .mtile span { font-size: .95rem; line-height: 1.3; }
+  .mtile::after { content: ''; position: absolute; right: -2px; bottom: -2px; width: 30px; height: 30px; background: var(--cream); border-left: var(--stroke) solid var(--brown); border-top: var(--stroke) solid var(--brown); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+  .mtile:active { transform: translate(2px, 2px); }
+  .mtile--s { min-height: 72px; align-content: center; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+  .accent-mustard { background: var(--mustard); }
+  .accent-coral { background: var(--coral); color: var(--char); }
+  .accent-ochre { background: var(--ochre); color: var(--cream); }
+  .accent-cream { background: var(--cream); }
+</style>

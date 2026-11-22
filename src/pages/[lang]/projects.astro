@@ -1,0 +1,78 @@
+---
+import Base from '../../layouts/Base.astro';
+import PathChip from '../../components/PathChip.astro';
+import RingsMark from '../../components/RingsMark.astro';
+import { t, pick, localePath, type Lang } from '../../i18n';
+import { langStaticPaths } from '../../lib/paths';
+import { getProjects, getTools, localizeTool } from '../../lib/content';
+export const getStaticPaths = langStaticPaths;
+const lang = Astro.params.lang as Lang;
+// the released tools and games come first, each linking to its own page on this site; then any other projects
+const fromTools = (await getTools()).map((e) => { const x = localizeTool(e, lang); return { id: x.slug, name: x.name, accent: x.accent, url: localePath(lang, `tools/${x.slug}`), copy: x.copy }; });
+const others = (await getProjects()).map((e) => ({ id: e.id, name: e.data.name, accent: e.data.accent, url: e.data.url, copy: pick(e.data.i18n as any, lang) as any }));
+const items = [...fromTools, ...others];
+// particles: small see-through circles that leave the main circle and drift away slowly (fixed values, no randomness at build)
+const COL = ['232,170,32', '240,82,73', '150,96,31', '245,238,216'];
+const puffs = Array.from({ length: 14 }, (_, i) => {
+  const a = (i * 137.5 * Math.PI) / 180; // golden-angle spread so they leave in all directions
+  const far = 240 + (i % 4) * 55;
+  return {
+    x: Math.round(Math.cos(a) * far), y: Math.round(Math.sin(a) * far),
+    s: 22 + ((i * 17) % 5) * 12, d: -(i * 2.3), t: 16 + (i % 5) * 3, c: COL[i % 4],
+  };
+});
+---
+<Base lang={lang} title={t(lang, 'meta.projects.title')} description={t(lang, 'meta.projects.description')} path="projects" wide>
+  <div class="proj">
+    <div class="proj__text">
+      <PathChip path="projects" />
+      <h1 class="reveal" style="--i:0">{t(lang, 'projects.heading')}</h1>
+      {items.length === 0 ? <p class="reveal" style="--i:2">{t(lang, 'projects.empty')}</p> : (
+        <ul class="plist">
+          {items.map((p, i) => (
+            <li class={i % 2 ? 'fly-r' : 'fly-l'} style={`--i:${i}`}>
+              {p.url
+                ? <a class={`ptile ink ${i % 2 ? 'ink-2' : ''} accent-${p.accent}`} href={p.url} rel={p.url.startsWith("/") ? undefined : "noopener"}><strong>{p.name}</strong><span>{p.copy.tagline}</span></a>
+                : <div class={`ptile ink ${i % 2 ? 'ink-2' : ''} accent-${p.accent}`}><strong>{p.name}</strong><span>{p.copy.tagline}</span></div>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+    <div class="proj__art" data-focus>
+      <RingsMark orbit thin />
+      <div class="puff" aria-hidden="true">
+        {puffs.map((p, i) => (
+          <span style={`--x:${p.x}px;--y:${p.y}px;--s:${p.s}px;--d:${p.d}s;--t:${p.t}s;--c:${p.c}`}></span>
+        ))}
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import '../../scripts/orbit';
+</script>
+
+<style>
+  .proj { overflow-x: clip; display: grid; gap: 2rem 4rem; align-items: start; padding-block: var(--page-top) 3rem; }
+  .proj__art { width: min(100%, 420px); justify-self: center; position: relative; }
+  /* particles start at the centre of the main circle, fade in, drift slowly outward and fade out */
+  .puff { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+  .puff span { position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: 50%; background: rgba(var(--c), .3); border: 1.5px solid rgba(81, 43, 25, .55); opacity: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .puff span { animation: puff var(--t) ease-out infinite; animation-delay: var(--d); }
+  }
+  @keyframes puff {
+    0% { opacity: 0; translate: 0 0; scale: .3; }
+    12% { opacity: 1; }
+    100% { opacity: 0; translate: var(--x) var(--y); scale: 1; }
+  }
+  .plist { list-style: none; padding: 0; display: grid; gap: 1rem; }
+  .ptile { display: grid; gap: .2em; padding: calc(1rem + 2px) calc(1.2rem + 2px); color: var(--brown); text-decoration: none; transition: transform .2s ease; }
+  a.ptile:hover { transform: translate(-4px, -4px); }
+  .ptile strong { font-size: 1.4rem; font-weight: 500; }
+  .accent-mustard { background: var(--mustard); } .accent-coral { background: var(--coral); color: var(--char); }
+  .accent-ochre { background: var(--ochre); color: var(--cream); } .accent-cream { background: var(--cream); }
+  @media (min-width: 900px) { .proj { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+</style>

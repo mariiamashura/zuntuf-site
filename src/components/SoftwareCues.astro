@@ -1,0 +1,62 @@
+---
+// The landing's "this is software" layer. Everything is decorative and can be switched off with site.features.softwareCues.
+import SoftwareGlyph from './SoftwareGlyph.astro';
+import { site } from '../config/site';
+interface Props { variant?: 'desk' | 'mob' }
+const { variant = 'desk' } = Astro.props;
+const glyphs = [
+  { kind: 'folder', cls: 'g1', depth: 0.9, bob: 7.5 },
+  { kind: 'smile', cls: 'g2', depth: -0.8, bob: 9 },
+  { kind: 'sun', cls: 'g3', depth: 0.6, bob: 8 },
+  { kind: 'bolt', cls: 'g4', depth: -0.5, bob: 6.5 },
+  { kind: 'star', cls: 'g5', depth: 0.7, bob: 10 },
+  { kind: 'sliders', cls: 'g6', depth: -0.9, bob: 8.5 },
+  { kind: 'progress', cls: 'g7', depth: 0.8, bob: 9.5 },
+  { kind: 'dice', cls: 'g8', depth: -0.7, bob: 7 },
+] as const;
+---
+{site.features.softwareCues && variant === 'desk' && (
+  <div class="cues" data-parallax aria-hidden="true">
+    {glyphs.map((g, i) => (
+      <div class={`cue ${g.cls}`} data-depth={g.depth} style={`--bob:${g.bob}s;--br:${(5.3 + ((i * 7) % 5) * 0.9).toFixed(1)}s;--k:${i}`}>
+        <div class="flee"><SoftwareGlyph kind={g.kind} /></div>
+      </div>
+    ))}
+  </div>
+)}
+{site.features.softwareCues && variant === 'mob' && (
+  <div class="cuerow" aria-hidden="true">
+    <SoftwareGlyph kind="folder" /><SoftwareGlyph kind="star" /><SoftwareGlyph kind="smile" /><SoftwareGlyph kind="sliders" />
+  </div>
+)}
+
+<script>
+  import '../scripts/flee';
+</script>
+
+<style is:global>
+  /* desktop: six glyphs in the margins around the star, drifting slowly and against the pointer */
+  .cues { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  /* --ax/--ay are set by wheel.ts: when a ray and its caption open, nearby glyphs drift away toward the page edges */
+  .cue { position: absolute; width: clamp(64px, 8.5vw, 124px); transform: translate(var(--ax, 0px), var(--ay, 0px)); transition: transform .65s cubic-bezier(.25, .9, .3, 1); }
+  /* --fx/--fy are driven frame by frame by flee.ts (a slow, curving steer), so no CSS transition here */
+  .flee { transform: translate(var(--fx, 0px), var(--fy, 0px)); }
+  /* every glyph also breathes on its own slow clock (the `scale` property; position uses translate/transform) */
+  .cue { animation: cue-breathe var(--br, 6s) ease-in-out infinite; animation-delay: calc(var(--k, 0) * -1.9s); }
+  @keyframes cue-breathe { 0%, 100% { scale: 1; opacity: 1; } 50% { scale: 1.045; opacity: .86; } }
+  .cue .glyph { animation: cue-bob var(--bob, 8s) ease-in-out infinite; animation-delay: calc(var(--k, 0) * -1.3s); }
+  .g1 { left: 7%; top: 12%; }          .g2 { right: 7%; top: 15%; width: clamp(70px, 9.5vw, 136px); }
+  .g3 { left: 11%; top: 44%; width: clamp(60px, 7.5vw, 110px); }  .g4 { right: 12%; top: 41%; width: clamp(44px, 5.5vw, 78px); }
+  .g5 { left: 8%; top: 74%; width: clamp(70px, 9vw, 130px); }     .g6 { right: 8%; top: 72%; width: clamp(56px, 7vw, 100px); }
+  .g7 { left: 26%; top: 84%; width: clamp(48px, 6vw, 88px); }     .g8 { right: 25%; top: 86%; width: clamp(40px, 4.8vw, 70px); }
+  @media (max-width: 1280px) { .g3, .g4, .g7, .g8 { display: none; } }
+  @keyframes cue-bob { 0%, 100% { translate: 0 0; rotate: 0deg; } 50% { translate: 0 -9px; rotate: 2.5deg; } }
+  @media (prefers-reduced-motion: reduce) { .cue, .cue .glyph { animation: none; } }
+
+  /* the intro brings them in after the star has landed */
+  html.intro-run .cues { animation: fade-in .9s ease calc(var(--m-spin-at) + 1.3s) backwards; }
+
+  /* phones: a quiet static row of four */
+  .cuerow { display: flex; justify-content: center; align-items: center; gap: 1rem; margin: 0 auto 1.1rem; }
+  .cuerow .glyph { width: 52px; height: auto; }
+</style>

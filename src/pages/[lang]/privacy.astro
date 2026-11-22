@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+import PathChip from '../../components/PathChip.astro';
+import { t, type Lang } from '../../i18n';
+import { langStaticPaths } from '../../lib/paths';
+import { inkOutline } from '../../lib/wheel';
+export const getStaticPaths = langStaticPaths;
+const lang = Astro.params.lang as Lang;
+const paras = ['p1', 'p2', 'p3'];
+const no = ['no1', 'no2', 'no3', 'no4'];
+const fills = ['mustard', 'coral', 'cream', 'ochre'];
+// the slash: a thin bar whose edges swell and thin, like the rest of the site's ink
+const BAR: [number, number][] = [[19.7, 77.7], [77.7, 19.7], [80.3, 22.3], [22.3, 80.3]];
+const pts = (p: [number, number][]) => p.map((q) => q.join(',')).join(' ');
+---
+<Base lang={lang} title={t(lang, 'meta.privacy.title')} description={t(lang, 'meta.privacy.description')} path="privacy" wide>
+  <div class="priv">
+    <PathChip path="privacy" />
+    <h1 class="reveal" style="--i:0">{t(lang, 'privacy.heading')}</h1>
+
+    <ul class="nos" data-focus>
+      {no.map((k, i) => (
+        <li class="dropin" style={`--i:${i};--r0:${i % 2 ? 16 : -16}deg;--r1:${i % 2 ? -2 : 2}deg`}>
+          <span class={`no no--${fills[i]}`}>
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <circle class="o" cx={50 + Math.cos(i * 2.1) * 0.9} cy={50 + Math.sin(i * 2.1) * 0.9} r="41.6" />
+              <circle class="f" cx="50" cy="50" r="40" />
+              <g class="bar"><polygon points={inkOutline(BAR, 4 + i, 0.5, 2.2)} /><polygon points={pts(BAR)} /></g>
+            </svg>
+            <span class="no__label">{t(lang, `privacy.${k}`)}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="stack">
+      {paras.map((p, i) => <p class={`reveal indent slab ink ${i % 2 ? 'ink-2' : 'ink-3'}`} style={`--i:${i + 2}`}>{t(lang, `privacy.${p}`)}</p>)}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .priv { padding-block: var(--page-top) 3rem; max-width: 860px; }
+  .nos { list-style: none; padding: 0; margin: 1.5rem 0 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.2rem; }
+  .no { display: grid; justify-items: center; gap: .6rem; text-align: center; cursor: default; }
+  .no svg { width: clamp(84px, 10vw, 130px); height: auto; overflow: visible; }
+  .no circle.o, .no .bar polygon { fill: var(--brown); stroke: none; }
+  .no--mustard .f { fill: var(--mustard); } .no--coral .f { fill: var(--coral); }
+  .no--cream .f { fill: var(--cream); } .no--ochre .f { fill: var(--ochre); }
+  .no .bar { transform-box: view-box; transform-origin: 50% 50%; transition: transform .45s cubic-bezier(.3, 1.5, .5, 1); }
+  .no:hover .bar { transform: rotate(90deg); }
+  .no__label { font-weight: 400; font-size: .92rem; overflow-wrap: anywhere; }
+  .stack { display: grid; gap: 1rem; }
+  .slab { margin: 0; padding: .8rem 1.1rem; font-size: .95rem; padding-left: 1.6rem; background: var(--cream); transition: transform .2s ease; max-width: none; }
+  .slab::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: var(--mustard); }
+  .slab:nth-child(2)::after { background: var(--coral); } .slab:nth-child(3)::after { background: var(--ochre); }
+  .slab:hover { transform: translateX(6px); }
+</style>

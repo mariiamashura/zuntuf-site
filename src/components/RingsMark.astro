@@ -1,0 +1,26 @@
+---
+import { hubDiscs } from '../lib/wheel';
+interface Props { class?: string; orbit?: boolean; thin?: boolean }
+const { class: cls = '', orbit = false, thin = false } = Astro.props;
+// thin: finer, still swelling and thinning ink (about 1.3 to 3.9 units instead of 2.8 to 9.6)
+const discs = thin ? hubDiscs(120, 120, 2.6, 1.3) : hubDiscs(120, 120);
+---
+<svg class={`rings ${orbit ? 'rings--orbit' : ''} ${cls}`} viewBox="-14 -14 268 268" aria-hidden="true" focusable="false">
+  {discs.map((h, i) => (
+    <g class="rg" style={`--s:${(i % 2 === 0 ? 1 : -1) * (0.6 + i * 0.45)}`}>
+      <circle class="ring" cx={h.ox} cy={h.oy} r={h.inkR} />
+      <circle cx={h.cx} cy={h.cy} r={h.r} class={`fill-${h.fill}`} />
+    </g>
+  ))}
+</svg>
+
+<style is:global>
+  .rings circle { stroke: none; }
+  .rings .ring { fill: var(--brown); }
+  .rings .fill-mustard { fill: var(--mustard); }
+  .rings .fill-coral { fill: var(--coral); }
+  .rings .fill-ochre { fill: var(--ochre); }
+  .rings .fill-cream { fill: var(--cream); }
+  /* orbit: every ring turns by its own factor, so the thick side of the ink travels around */
+  .rings--orbit .rg { transform-origin: 120px 120px; rotate: calc(var(--a, 0) * var(--s, 1) * 1deg); }
+</style>

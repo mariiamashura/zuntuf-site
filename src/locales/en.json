@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "home": {
+      "title": "Zuntuf",
+      "description": "Zuntuf: Windows programs by one independent author. BowerFS file manager, StockUploader for stock photos and Svitko, a building game for children."
+    },
+    "about": {
+      "title": "About — Zuntuf",
+      "description": "About the author of Zuntuf: a graphic designer and artist from Kyiv who builds software together with AI tools."
+    },
+    "contact": {
+      "title": "Contact — Zuntuf",
+      "description": "Contact the author of Zuntuf: email, GitHub and LinkedIn."
+    },
+    "projects": {
+      "title": "Projects — Zuntuf",
+      "description": "Programs and a game by Zuntuf: BowerFS file manager, StockUploader for stock photography, Svitko for children."
+    },
+    "privacy": {
+      "title": "Privacy — Zuntuf",
+      "description": "What this website does and does not collect."
+    },
+    "notFound": {
+      "title": "Page not found — Zuntuf",
+      "description": "Some pages are only roads that lead somewhere else."
+    },
+    "lab": {
+      "title": "Lab — Zuntuf",
+      "description": "Experiments, left unfinished on purpose."
+    },
+    "keywords": "Zuntuf, BowerFS, StockUploader, Svitko, file manager for Windows, duplicate file finder, stock photo uploader, Shutterstock, children's game, learn to count and read, independent software, Mariia Mashura, AI-assisted development",
+    "ogAlt": "Zuntuf: small programs and a game, drawn and built by one author"
+  },
+  "nav": {
+    "home": "Home",
+    "tools": "Tools",
+    "projects": "Projects",
+    "lab": "Lab",
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy",
+    "skipIntro": "Click or press any key to skip",
+    "back": "Back",
+    "skip": "Skip to content",
+    "language": "Language",
+    "mainNav": "Main navigation",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "home": {
+    "tagline": "Some of it is useful. Some of it is play.",
+    "signature": "Made by one pair of hands",
+    "toolsHeading": "Tools",
+    "empty": "The first tools are still becoming themselves.",
+    "prompt": "./tools --play"
+  },
+  "about": {
+    "heading": "About",
+    "p1": "The project is developed using an AI-assisted development approach: AI serves as a development tool, while the concept, design and all key decisions are the author's.",
+    "links": "Links",
+    "toolsHeading": "Tools",
+    "toolsDesign": "Design and creativity",
+    "toolsAi": "AI-assisted development"
+  },
+  "contact": {
+    "heading": "Contact",
+    "intro": "A letter is the oldest bridge between two minds. The address is below.",
+    "email": "Email",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyLabel": "Copy email address",
+    "itch": "itch.io",
+    "support": "Support the work",
+    "supportText": "Donate via Monobank",
+    "qrLabel": "QR code for the Monobank jar"
+  },
+  "projects": {
+    "heading": "Projects",
+    "intro": "Things the author is still learning to name.",
+    "empty": "Still unnamed. Still becoming."
+  },
+  "lab": {
+    "heading": "Lab",
+    "intro": "Experiments left unfinished on purpose, because finished things stop asking questions.",
+    "empty": "The workshop stands empty, for now. Absence is also a material.",
+    "launch": "Launch"
+  },
+  "privacy": {
+    "heading": "Privacy",
+    "p1": "This website does not use cookies, analytics or tracking, and does not collect personal data.",
+    "p2": "The site is hosted on Cloudflare, which may process technical request data such as your IP address to deliver the pages.",
+    "p3": "Links to other websites, such as GitHub or LinkedIn, are governed by their own privacy policies.",
+    "no1": "No cookies",
+    "no2": "No analytics",
+    "no3": "No tracking",
+    "no4": "No personal data"
+  },
+  "tool": {
+    "allFeatures": "All features in detail",
+    "featuresTitle": "All features",
+    "features": "Features",
+    "platforms": "Platforms",
+    "languages": "Languages",
+    "version": "Version",
+    "status": "Status",
+    "category": "Category",
+    "download": "Download",
+    "downloadFor": "Download for {os}",
+    "requirements": "System requirements",
+    "changelog": "Changelog",
+    "faq": "FAQ",
+    "privacy": "Privacy",
+    "website": "Website",
+    "docs": "Documentation",
+    "source": "Source code",
+    "related": "Related tools",
+    "screenshots": "Screenshots",
+    "comingSoon": "Coming soon",
+    "size": "Size",
+    "pending": "The story of this one is still being written."
+  },
+  "status": {
+    "released": "Released",
+    "beta": "Beta",
+    "coming-soon": "Coming soon"
+  },
+  "category": {
+    "photography": "Photography",
+    "files": "File management",
+    "productivity": "Productivity",
+    "creative": "Creative tools",
+    "utilities": "Utilities",
+    "experimental": "Experimental"
+  },
+  "os": {
+    "windows": "Windows",
+    "macos": "macOS",
+    "linux": "Linux",
+    "android": "Android",
+    "ios": "iOS",
+    "web": "Web"
+  },
+  "footer": {
+    "rights": "© {year} Mariia Mashura · Zuntuf"
+  },
+  "notFound": {
+    "heading": "Page not found",
+    "text": "This page does not exist, or has dissolved into the distance. Every road ends somewhere; this one ends here.",
+    "home": "Back to start",
+    "hint": "Move the pointer: the rings follow it, as thought follows the thinker."
+  },
+  "film": {
+    "title": "The Head",
+    "sub": "A film in two minutes",
+    "replay": "Watch again",
+    "back": "Back to the star",
+    "skip": "Skip",
+    "end": "The end",
+    "label": "Open the film: The Head",
+    "l1": "Once upon a time there was a head. It was a logo.",
+    "l2": "I think, therefore I am.",
+    "l3": "…But who exactly is thinking? The favicon?",
+    "l4": "Above it hung a star. Nobody asked who hung it there.",
+    "l5": "Enough! I'm going to see the world!",
+    "l6": "Position: top left. Philosophers call it fate. Designers call it a header.",
+    "l7": "Then came the cursor, the oldest enemy of every head.",
+    "l8": "Hold still. I only want to click you.",
+    "l9": "Ow. Every click is a small question put to the universe.",
+    "l10": "The commotion woke the neighbours.",
+    "l11": "Greetings. I am Svitko, a wizard. I lost my lantern. … It's on my chest again, isn't it.",
+    "l12": "Yes, Svitko. It is glowing at you.",
+    "l13": "Excuse me, I'm full. Of everything. Nobody has ever opened me.",
+    "l14": "Let me OUT! I only wanted to upload one picture!",
+    "l15": "Don't mind me. I just go round and round. They call it a career.",
+    "l16": "I'm the only one here in a good mood. It's in my contract.",
+    "l17": "Friends, a question: what is the point of all this?",
+    "l18": "To find the lantern.",
+    "l19": "To be opened.",
+    "l20": "To get out!",
+    "l21": "To go round.",
+    "l22": "To smile.",
+    "l23": "To be clicked.",
+    "l24": "Everyone fell silent. Even the progress bar. It stopped at 99%.",
+    "l25": "Meaning always stops at 99%. Maybe that is the point.",
+    "l26": "Small, in a corner, nobody asks me to be profound.",
+    "l27": "(position: fixed. z-index: forever.)",
+    "n_cursor": "Cursor",
+    "n_sun": "Sun",
+    "n_smile": "Smiley",
+    "sound_off": "Turn sound on",
+    "sound_on": "Sound on · click to mute",
+    "no_voice": "No voice for this language on this device",
+    "play_sound": "Watch with sound",
+    "play_mute": "Watch without sound",
+    "ru_voice": "No Ukrainian voice on this device: a Russian voice will read the lines, so the pronunciation will be approximate.",
+    "play": "Watch"
+  },
+  "fallbackNotice": "Not yet translated; shown in English."
+}

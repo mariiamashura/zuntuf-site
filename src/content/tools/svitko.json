@@ -1,0 +1,188 @@
+{
+  "name": "Svitko",
+  "order": 3,
+  "accent": "ochre",
+  "status": "beta",
+  "version": "0.1",
+  "homepage": "https://playsvitko.kolobokgames.workers.dev/",
+  "art": "svitko",
+  "panels": false,
+  "languages": [
+    "en",
+    "de",
+    "ua"
+  ],
+  "platforms": [
+    {
+      "os": "windows",
+      "downloadUrl": "https://github.com/mariiamashura/svitko-game/releases/latest/download/Svitko-0.1-windows.zip",
+      "size": "46 MB"
+    }
+  ],
+  "i18n": {
+    "en": {
+      "tagline": "A building game for children, where learning to count and read happens by itself.",
+      "description": "Svitko began as a game for the author’s five-year-old daughter. It is a world of blocks that a child can dig, build and furnish, with small quests along the way. Tasks are shown with pictures, numbers and animation, so even a child who cannot read yet can play. The game is a work in progress, but it can already be played from start to finish.",
+      "features": [
+        "A world of blocks to dig, build and decorate, with mines, buried treasures, water and swimming",
+        "Four places connected by portals: a house, a meadow, a world of numbers and a world of letters",
+        "Characters give quests and rewards; what they need is shown above their heads as a picture and a counter",
+        "Counting and recognising letters happen inside the game, not as lessons",
+        "A cat keeps the child company",
+        "Collect items, medals and coins, and spend them in the shop on furniture and decorations",
+        "Furniture can be placed anywhere in the house, moved and turned",
+        "English, Ukrainian and German"
+      ],
+      "requirements": [
+        "Windows",
+        "Download about 46 MB, unpack the archive and start the game",
+        "Works without internet"
+      ],
+      "privacy": "The game works offline and collects no data. There is no sign-in, no analytics, no cloud saves and no permissions requested from your system. Progress is kept in a file on your own computer.",
+      "faq": [
+        {
+          "q": "How old should the child be?",
+          "a": "The game is made for children of about five to eight years old. Tasks use pictures and numbers, so a child who cannot read yet can still play."
+        },
+        {
+          "q": "Is there a timer or a way to lose?",
+          "a": "No. There are no timers, scores against other players or failure screens. A wrong answer can simply be tried again."
+        },
+        {
+          "q": "Are there ads or purchases?",
+          "a": "No ads and no paid features. Every coin is earned in the game."
+        },
+        {
+          "q": "Is the game finished?",
+          "a": "Not yet. It can be played from beginning to end, but it is still being improved. Feedback is welcome, especially about places where a child got stuck or confused."
+        }
+      ]
+    },
+    "de": {
+      "tagline": "Ein Bauspiel für Kinder, in dem man Zählen und Lesen ganz nebenbei lernt.",
+      "description": "Svitko begann als Spiel für die fünfjährige Tochter des Autors. Es ist eine Welt aus Blöcken, die ein Kind graben, bebauen und einrichten kann, mit kleinen Aufgaben unterwegs. Die Aufgaben werden mit Bildern, Zahlen und Animationen gezeigt, sodass auch ein Kind spielen kann, das noch nicht lesen kann. Das Spiel ist noch in Arbeit, lässt sich aber schon von Anfang bis Ende spielen.",
+      "features": [
+        "Eine Welt aus Blöcken zum Graben, Bauen und Einrichten, mit Minen, vergrabenen Schätzen, Wasser und Schwimmen",
+        "Vier Orte, durch Portale verbunden: ein Haus, eine Wiese, eine Zahlenwelt und eine Buchstabenwelt",
+        "Figuren stellen Aufgaben und geben Belohnungen; was sie brauchen, steht als Bild und Zähler über ihrem Kopf",
+        "Zählen und Buchstaben erkennen geschieht im Spiel selbst, nicht als Unterricht",
+        "Eine Katze leistet dem Kind Gesellschaft",
+        "Gegenstände, Medaillen und Münzen sammeln und im Laden gegen Möbel und Deko eintauschen",
+        "Möbel lassen sich im ganzen Haus platzieren, verschieben und drehen",
+        "Englisch, Ukrainisch und Deutsch"
+      ],
+      "requirements": [
+        "Windows",
+        "Etwa 46 MB herunterladen, Archiv entpacken und das Spiel starten",
+        "Funktioniert ohne Internet"
+      ],
+      "privacy": "Das Spiel läuft offline und sammelt keine Daten. Es gibt keine Anmeldung, keine Analyse, keine Cloud-Speicherung und keine Berechtigungen auf Ihrem System. Der Fortschritt liegt in einer Datei auf Ihrem eigenen Computer.",
+      "faq": [
+        {
+          "q": "Wie alt sollte das Kind sein?",
+          "a": "Das Spiel ist für Kinder von etwa fünf bis acht Jahren gemacht. Die Aufgaben nutzen Bilder und Zahlen, deshalb kann auch ein Kind spielen, das noch nicht lesen kann."
+        },
+        {
+          "q": "Gibt es einen Zeitdruck oder Verlieren?",
+          "a": "Nein. Es gibt keine Zeitlimits, keinen Wettbewerb gegen andere und keine Verlierbildschirme. Eine falsche Antwort kann man einfach noch einmal versuchen."
+        },
+        {
+          "q": "Gibt es Werbung oder Käufe?",
+          "a": "Keine Werbung und keine kostenpflichtigen Funktionen. Jede Münze wird im Spiel verdient."
+        },
+        {
+          "q": "Ist das Spiel fertig?",
+          "a": "Noch nicht. Es lässt sich von Anfang bis Ende spielen, wird aber weiter verbessert. Rückmeldungen sind willkommen, besonders wenn ein Kind nicht weiterkam oder verwirrt war."
+        }
+      ]
+    },
+    "ua": {
+      "tagline": "Гра-будівництво для дітей, у якій рахувати й читати вчишся сам собою.",
+      "description": "Світко почався як гра для п’ятирічної доньки автора. Це світ із блоків, які дитина може копати, будувати й обставляти, з невеликими завданнями дорогою. Завдання показано картинками, числами й анімацією, тож грати може навіть дитина, яка ще не вміє читати. Гра ще в роботі, але вже проходиться від початку до кінця.",
+      "features": [
+        "Світ із блоків: копати, будувати, обставляти; є шахти, закопані скарби, вода й плавання",
+        "Чотири місця, з’єднані порталами: будинок, лука, світ цифр і світ літер",
+        "Персонажі дають завдання та нагороди; що їм потрібно, видно над головою як картинку з лічильником",
+        "Лічба й упізнавання літер відбуваються всередині гри, а не як уроки",
+        "Кіт складає дитині компанію",
+        "Збирайте предмети, медалі та монети й витрачайте їх у магазині на меблі та прикраси",
+        "Меблі можна ставити будь-де в будинку, пересувати й повертати",
+        "Англійська, українська та німецька"
+      ],
+      "requirements": [
+        "Windows",
+        "Завантажте близько 46 МБ, розпакуйте архів і запустіть гру",
+        "Працює без інтернету"
+      ],
+      "privacy": "Гра працює офлайн і не збирає даних. Немає входу в акаунт, аналітики, хмарних збережень і запитів дозволів у вашої системи. Прогрес зберігається у файлі на вашому комп’ютері.",
+      "faq": [
+        {
+          "q": "Для якого віку ця гра?",
+          "a": "Гра створена для дітей приблизно п’яти–восьми років. Завдання показано картинками й числами, тож грати може й дитина, яка ще не вміє читати."
+        },
+        {
+          "q": "Чи є таймер або можливість програти?",
+          "a": "Ні. Немає таймерів, змагання з іншими й екранів поразки. Неправильну відповідь можна просто спробувати ще раз."
+        },
+        {
+          "q": "Чи є реклама або покупки?",
+          "a": "Ні реклами, ні платних функцій. Кожна монета заробляється в грі."
+        },
+        {
+          "q": "Чи завершена гра?",
+          "a": "Ще ні. Її можна пройти від початку до кінця, але вона ще вдосконалюється. Відгуки вітаються, особливо про місця, де дитина застрягла чи розгубилась."
+        }
+      ]
+    }
+  },
+  "screenshots": [
+    {
+      "src": "/tools/svitko/shots/home.webp",
+      "alt": {
+        "en": "The player's house from above",
+        "de": "Das Haus der Spielerin oder des Spielers von oben",
+        "ua": "Будинок гравця зверху"
+      }
+    },
+    {
+      "src": "/tools/svitko/shots/world.webp",
+      "alt": {
+        "en": "The meadow with portals to the worlds of numbers and letters",
+        "de": "Die Wiese mit Portalen zur Zahlen- und Buchstabenwelt",
+        "ua": "Лука з порталами до світу цифр і літер"
+      }
+    },
+    {
+      "src": "/tools/svitko/shots/numbers.webp",
+      "alt": {
+        "en": "The world of numbers: a sandy valley with a counting marker",
+        "de": "Die Zahlenwelt: ein sandiges Tal mit Zählmarkierung",
+        "ua": "Світ цифр: піщана долина з лічильником"
+      }
+    },
+    {
+      "src": "/tools/svitko/shots/letters.webp",
+      "alt": {
+        "en": "The world of letters: letter cards on the ground",
+        "de": "Die Buchstabenwelt: Buchstabenkarten auf dem Boden",
+        "ua": "Світ літер: картки з літерами на землі"
+      }
+    },
+    {
+      "src": "/tools/svitko/shots/build.webp",
+      "alt": {
+        "en": "Building a stone arch",
+        "de": "Einen Steinbogen bauen",
+        "ua": "Будуємо кам’яну арку"
+      }
+    },
+    {
+      "src": "/tools/svitko/shots/decor.webp",
+      "alt": {
+        "en": "Furnishing a living room",
+        "de": "Ein Wohnzimmer einrichten",
+        "ua": "Обставляємо вітальню"
+      }
+    }
+  ]
+}

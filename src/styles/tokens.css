@@ -1,0 +1,17 @@
+:root {
+  --cream: #F5EED8;
+  --mustard: #E8AA20;
+  --coral: #F05249;
+  --ochre: #96601F;
+  --brown: #512B19;
+  --char: #28221D;
+
+  --stroke: clamp(1.5px, 0.2vw, 2.5px);
+  --font: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  --gutter: clamp(16px, 3vw, 40px);
+  --page-top: 1.4rem; /* every page's first block (chip / back link, then the heading) starts at this height */
+  --focus: 0 0 0 3px var(--cream), 0 0 0 6px var(--brown);
+
+  /* static paper grain: rasterised once by the browser, not animated */
+  --paper: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.32  0 0 0 0 0.17  0 0 0 0 0.1  0 0 0 0.07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}

@@ -1,0 +1,95 @@
+---
+import { C, CX, pieces, eyes, nose, waveRibbons, spiralRibbon, arcs, pts, centroid } from '../lib/face';
+
+// The pieces appear one after another, starting at the eyes and spreading outward.
+const EYE: [number, number] = [CX, 262];
+let n = 0;
+const lit = (p: [number, number]) => {
+  const d = Math.hypot(p[0] - EYE[0], p[1] - EYE[1]) / 640; // 0 at the eyes .. ~1 at the far arcs
+  return `--d:${(d * 1.9).toFixed(2)};--i:${n++}`;
+};
+const spiral = spiralRibbon(50, 6.5, 1.3, 3.6);
+---
+<div class="face-wrap is-emerging" data-emerge>
+  <svg class="face" viewBox="120 0 560 800" aria-hidden="true" focusable="false" data-face>
+    <defs>
+      {eyes.map((e) => <clipPath id={`clip-${e.id}`}><polygon points={pts(e.inner)} /></clipPath>)}
+      <clipPath id="clip-arcs"><rect x="120" y="640" width="560" height="160" /></clipPath>
+    </defs>
+
+    {pieces.map((p) => (
+      <g class={`part part--${p.id}`} style={lit(centroid(p.pts))}>
+        <polygon points={pts(p.pts)} fill={p.fill} />
+      </g>
+    ))}
+
+    {eyes.map((e) => (
+      <g class={`part part--eye ${e.id}`} style={`--d:0;--i:${n++}`}>
+        <polygon points={pts(e.outer)} fill={C.brown} />
+        <polygon points={pts(e.inner)} fill={C.cream} />
+        <g clip-path={`url(#clip-${e.id})`}>
+          <g class="pupil">
+            <g transform={`translate(${e.sx} ${e.sy})`}>
+              <polygon class="spiral" points={spiral} fill={C.coral} />
+            </g>
+          </g>
+        </g>
+      </g>
+    ))}
+
+    <g class="part part--nose" style={lit(centroid(nose.outer))}>
+      <polygon points={pts(nose.outer)} fill={C.brown} />
+      <polygon points={pts(nose.inner)} fill={C.ochre} />
+    </g>
+
+    <g class="part part--waves" style={lit([CX, 500])}>
+      {waveRibbons.map((p) => <polygon points={p} fill={C.coral} />)}
+    </g>
+
+    <g class="part part--arcs" style={lit([CX, 760])} clip-path="url(#clip-arcs)">
+      {arcs.rings.map((r) => <circle cx={arcs.cx} cy={arcs.cy} r={r.r} fill="none" stroke={r.c} stroke-width={r.w} />)}
+    </g>
+  </svg>
+</div>
+
+<style is:global>
+  .face-wrap { position: relative; }
+  .face { position: relative; z-index: 1; width: 100%; height: auto; display: block; }
+  .face .part { transform-box: fill-box; transform-origin: center; transition: transform .35s cubic-bezier(.3, 1.4, .5, 1); }
+  .face .pupil { transform: translate(calc(var(--ex, 0) * 1px), calc(var(--ey, 0) * 1px)); transition: transform .12s linear; }
+  /* every piece lifts a little when you touch it */
+  .face .part:hover { transform: translateY(-9px) rotate(-1.5deg); cursor: pointer; }
+  .face .part--eye:hover { transform: scale(1.06); }
+  .face .part--arcs:hover { transform: none; cursor: default; }
+  /* the spirals turn while the pointer is over the face */
+  .face .spiral { transform-box: fill-box; transform-origin: center; }
+  .face:hover .spiral { animation: spiral-turn 5s linear infinite; }
+  .face.is-blink .part--eye { transform: scaleY(.12); }
+  @keyframes spiral-turn { to { transform: rotate(360deg); } }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .face-wrap.is-emerging .part { animation: emerge .9s cubic-bezier(.2, .8, .25, 1) backwards; animation-delay: calc(var(--d) * 1s + .3s); }
+    .face-wrap.is-emerging .part--eye { animation-name: emerge-eye; animation-duration: 1s; }
+  }
+  /* idle life: after it has emerged the face breathes and turns a little, left and right (GPU transform only) */
+  .face-wrap { perspective: 1400px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .face { will-change: transform; animation: face-breathe 7s ease-in-out 2.6s infinite, face-turn 13s ease-in-out 2.6s infinite; }
+  }
+  @keyframes face-breathe {
+    0%, 100% { translate: 0 0; scale: 1; }
+    50% { translate: 0 -7px; scale: 1.018; }
+  }
+  @keyframes face-turn {
+    0%, 100% { rotate: 0 1 0 0deg; }
+    25% { rotate: 0 1 0 9deg; }
+    75% { rotate: 0 1 0 -9deg; }
+  }
+  /* pieces appear one after another, starting at the eyes: a plain fade and a small settle, no darkening */
+  @keyframes emerge { from { opacity: 0; transform: scale(.94); } }
+  @keyframes emerge-eye { from { opacity: 0; transform: scale(.9); } }
+</style>
+
+<script>
+  import '../scripts/face';
+</script>
