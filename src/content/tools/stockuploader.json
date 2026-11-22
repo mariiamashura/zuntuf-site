@@ -36,6 +36,14 @@
         "de": "Dunkles Design",
         "ua": "Темна тема"
       }
+    },
+    {
+      "src": "/tools/stockuploader/shots/03.webp",
+      "alt": {
+        "en": "Receiving photos from a phone: scan the QR code",
+        "de": "Fotos vom Handy empfangen: QR-Code scannen",
+        "ua": "Отримання фото з телефона: скануйте QR-код"
+      }
     }
   ],
   "i18n": {
